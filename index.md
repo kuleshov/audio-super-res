@@ -2,6 +2,12 @@
 
 You can use the [editor on GitHub](https://github.com/kuleshov/audio-super-res/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
+<audio controls>
+  <source src="http://josesotelo.com/speechsynthesis/files/wav/dimex/raw_best_bidirectional_text_0.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+
+
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
 ### Markdown
