@@ -1,11 +1,36 @@
-## Welcome to GitHub Pages
+## Audio Super-Resolution Samples
 
-You can use the [editor on GitHub](https://github.com/kuleshov/audio-super-res/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+Below, you may find samples from our neural network-based audio super-resolution model and several baselines.
 
-<audio controls>
-  <source src="http://josesotelo.com/speechsynthesis/files/wav/dimex/raw_best_bidirectional_text_0.wav" type="audio/wav">
+We will be adding more samples here as they become available.
+
+### Single Speaker
+
+We start with models trained and tested on different utterances from the same speaker.
+
+### Sample 1
+
+High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1.1.hr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio>
+
+Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1.1.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+
+Super resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1.1.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+
+Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1.1.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio>
+
+
 
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
