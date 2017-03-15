@@ -30,7 +30,119 @@ Your browser does not support the audio element.
 Your browser does not support the audio element.
 </audio> </div>
 
+### Sample 2
 
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.2.6.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.2.6.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.2.6.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.2.6.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 3
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.3.6.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.3.6.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.3.6.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.3.6.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Single Speaker (8x upscaling)
+
+Next, we look at 8x upscaling. Again, the super-resolution algorithm recovers a large fraction of the high frequencies.
+
+### Sample 1
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.6.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.6.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.6.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.6.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 2
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.2.8.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.2.8.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.2.8.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.2.8.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 3
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.3.8.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.3.8.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.3.8.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.3.8.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
 
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
