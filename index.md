@@ -3,7 +3,7 @@
 You can use the [editor on GitHub](https://github.com/kuleshov/audio-super-res/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
 <audio controls>
-  <source src="https://github.com/kuleshov/audio-super-res/blob/master/samples/sp1.1.pr.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1.1.pr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio>
 
