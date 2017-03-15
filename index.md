@@ -4,29 +4,29 @@ Below, you may find samples from our neural network-based audio super-resolution
 
 We will be adding more samples here as they become available.
 
-### Single Speaker
+### Single Speaker (6x upscaling)
 
 We start with models trained and tested on different utterances from the same speaker.
 
 ### Sample 1
 
-High resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1.1.hr.wav" type="audio/wav">
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.6.hr.wav" type="audio/wav">
 Your browser does not support the audio element.
-</audio>
+</audio> </div>
 
 Low resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1.1.lr.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.lr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio>
 
 Super resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1.1.pr.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.pr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio>
 
 Cubic interpolation: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1.1.sp.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.sp.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio>
 
