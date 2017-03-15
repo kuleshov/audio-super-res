@@ -90,22 +90,22 @@ Next, we look at 8x upscaling. Again, the super-resolution algorithm recovers a 
 ### Sample 1
 
 <div> High resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.6.hr.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.8.hr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio> </div>
 
 <div> Low resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.6.lr.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.8.lr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio> </div>
 
 <div> Super-resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.6.pr.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.8.pr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio> </div>
 
 <div> Cubic interpolation: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.6.sp.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.8.sp.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio> </div>
 
