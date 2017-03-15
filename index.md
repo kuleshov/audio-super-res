@@ -391,17 +391,17 @@ Finally, we are going to look at a few more samples that provide useful insights
 Our first sample shows that our method can "hallucinate" new sounds when they can no longer be exactly recovered. Sometimes, this works correctly, as in some of the examples above. In other cases, it leads to some interesting failure modes, like the one below.
 
 <div> High resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/extra/4/extra.1.4.hr.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/extra/extra.1.4.hr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio> </div>
 
 <div> Low resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/extra/4/extra.1.4.lr.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/extra/extra.1.4.lr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio> </div>
 
 <div> Super-resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/extra/4/extra.1.4.pr.wav" type="audio/wav">
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/extra/extra.1.4.pr.wav" type="audio/wav">
 Your browser does not support the audio element.
 </audio> </div>
 
