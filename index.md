@@ -6,7 +6,7 @@ We will be adding more samples here as they become available.
 
 ### Single Speaker (6x upscaling)
 
-We start with models trained and tested on different utterances from the same speaker.
+We start with models trained and tested on different utterances from the same speaker. At 6x upscaling, the low-resolution audio becomes very hard to comprehend, but our method can recover a significant fraction of the high frequency, at the cost of introducing a small amount of noise.
 
 ### Sample 1
 
@@ -15,20 +15,20 @@ We start with models trained and tested on different utterances from the same sp
 Your browser does not support the audio element.
 </audio> </div>
 
-Low resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.lr.wav" type="audio/wav">
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.6.lr.wav" type="audio/wav">
 Your browser does not support the audio element.
-</audio>
+</audio> </div>
 
-Super resolution: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.pr.wav" type="audio/wav">
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.6.pr.wav" type="audio/wav">
 Your browser does not support the audio element.
-</audio>
+</audio> </div>
 
-Cubic interpolation: <audio controls>
-  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.sp.wav" type="audio/wav">
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/6/sp1.1.6.sp.wav" type="audio/wav">
 Your browser does not support the audio element.
-</audio>
+</audio> </div>
 
 
 
