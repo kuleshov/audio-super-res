@@ -13,9 +13,79 @@ Below, you may find samples from our neural network-based audio super-resolution
 
 We will be adding more samples here as they become available.
 
+### Single Speaker (4x upscaling)
+
+We start with models trained and tested on different utterances from the same speaker. At 4x upscaling, the reproduction quality is very good, and it can be sometimes difficult to tell the reconstructions apart from the originals.
+
+### Sample 1
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.1.4.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.1.4.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.1.4.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.1.4.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 2
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.2.4.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.2.4.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.2.4.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.2.4.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 3
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.3.4.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.3.4.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.3.4.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/4/sp1.3.4.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
 ### Single Speaker (6x upscaling)
 
-We start with models trained and tested on different utterances from the same speaker. At 6x upscaling, the low-resolution audio becomes very hard to comprehend, but our method can recover a significant fraction of the high frequency, at the cost of introducing a small amount of noise.
+At 6x upscaling, the low-resolution audio becomes very hard to comprehend, but our method can recover a significant fraction of the high frequency, at the cost of introducing a small amount of noise.
 
 ### Sample 1
 
@@ -382,6 +452,216 @@ Your browser does not support the audio element.
 Your browser does not support the audio element.
 </audio> </div>
 
+### Piano (4x upscaling)
+
+At 4x upsampling, both the neural network and the cubic interpolation baseline are good at reconstructing the downsampled signal and perform comparably well.
+
+### Sample 1
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.1.4.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.1.4.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.1.4.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.1.4.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 2
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.2.4.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.2.4.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.2.4.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.2.4.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 3
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.3.4.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.3.4.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.3.4.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.3.4.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Piano (6x upscaling)
+
+At 6x upscaling, the problem becomes more difficult. Neural networks reconstruct more high frequency, but also introduce some background noise.
+
+### Sample 1
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.1.6.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.1.6.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.1.6.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.1.6.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 2
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.2.6.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.2.6.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.2.6.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.2.6.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 3
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.3.6.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.3.6.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.3.6.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/6/piano.3.6.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Piano (8x upscaling)
+
+At 8x upscaling, the task is even more challenging; our baseline sounds dull, while the neural network recovers more detail, but also adds some distortion.
+
+### Sample 1
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.1.8.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.1.8.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.1.8.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.1.8.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 2
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.2.8.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.2.8.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.2.8.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.2.8.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+### Sample 3
+
+<div> High resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.3.8.hr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Low resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.3.8.lr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Super-resolution: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.3.8.pr.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
+<div> Cubic interpolation: <audio controls>
+  <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/8/piano.3.8.sp.wav" type="audio/wav">
+Your browser does not support the audio element.
+</audio> </div>
+
 ### Interesting samples
 
 Finally, we are going to look at a few more samples that provide useful insights into how our method works.
@@ -405,6 +685,3 @@ Your browser does not support the audio element.
 Your browser does not support the audio element.
 </audio> </div>
 
-### Piano Samples
-
-We are regenerating our Piano samples, and we will add them as soon they become available.
