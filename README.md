@@ -5,14 +5,14 @@ This repository implements the audio super-resolution model proposed in:
 
 ```
 V. Kuleshov, Z. Enam, and S. Ermon. Audio Super Resolution Using Neural Networks. ICLR 2017 (Workshop track)
-V. Kuleshov, Z. Enam, P. W. Koh, and S. Ermon. Deep Convolutional Time Series Translation, ArXiv 2017
+V. Kuleshov, Z. Enam, P. W. Koh, and S. Ermon. Deep Constitutional Time Series Translation, ArXiv 2017
 ```
 
 ## Installation
 
 ### Requirements
 
-The model is implemented in Tensorflow and Keras and uses several additional libraries. Our configuration was:
+The model is implemented in Tensorflow and Keras and uses several additional libraries. Specifically, we used:
 
 * `tensorflow==0.12.1`
 * `keras==1.2.1`
@@ -27,9 +27,11 @@ The model is implemented in Tensorflow and Keras and uses several additional lib
 To install this package, simply clone the git repo:
 
 ```
-git clone [...];
+git clone https://github.com/kuleshov/audio-super-res.git;
 cd audio-super-res;
 ```
+
+## Running the model
 
 ### Contents
 
@@ -40,34 +42,20 @@ The repository is structured as follows.
 * `./docs`: html source code for the project webpage
 * `./data`: code to download the model data
 
-## Running the model
-
 ### Retrieving data
 
-The `/data` subfolder contains code for preparing the VCTK speech dataset.
-
-First, you need to download the data. Make sure you have enough disk space and bandwidth (the dataset is over 18G, uncompressed).
+The `./data` subfolder contains code for preparing the VCTK speech dataset.
+Make sure you have enough disk space and bandwidth (the dataset is over 18G, uncompressed).
+You need to type:
 
 ```
 cd ./data/vctk;
 make;
 ```
 
-Next, you need to prepare data for training the model. 
-Specifically, you need to create pairs of high and low resolution sound patches (typically, about 0.5s in length).
-We have included a script called `prep_vctk.py` that does that.
-
-There are two datasets that can be prepared. 
-The single-speaker dataset consists only of VCTK speaker #1; it is relatively quick to train a model (a few hours). This option is great for quickly testing the model.
-The multi-speaker dataset uses the last 8 VCTK speakers for evaluation, and the rest for training; it takes several days to train the model, and several hours to prepare the data.
-
-The simplest way to prepare the data is to run `make` in the corresponding directory, e.g.
-```
-cd ./speaker1;
-make;
-```
-
-Alternatively, you may directly use the script, which works as follows.
+Next, you must prepare the dataset for training:
+you will need to create pairs of high and low resolution sound patches (typically, about 0.5s in length).
+We have included a script called `prep_vctk.py` that does that, which works as follows.
 
 ```
 usage: prep_vctk.py [-h] [--file-list FILE_LIST] [--in-dir IN_DIR] [--out OUT]
@@ -95,6 +83,19 @@ optional arguments:
 ```
 
 The output of the data preparation step are two files in `.h5` format containing, respectively, the training and validation pairs of high/low resolution sound patches.
+Also, you can just run `make` in the corresponding directory, e.g.
+```
+cd ./speaker1;
+make;
+```
+
+### Audio super resolution tasks
+
+There are two datasets that can be prepared. 
+
+* The single-speaker dataset consists only of VCTK speaker #1; it is relatively quick to train a model (a few hours).
+* The multi-speaker dataset uses the last 8 VCTK speakers for evaluation, and the rest for training; it takes several days to train the model, and several hours to prepare the data.
+
 
 ### Training the model
 
@@ -120,7 +121,7 @@ optional arguments:
   --lr LR               learning rate
 ```
 
-For example, to run the model on data prepared for the single speaker dataset, you may do the following.
+For example, to run the model on data prepared for the single speaker dataset, you would type:
 
 ```
 python run.py train \
@@ -132,11 +133,11 @@ python run.py train \
   --logname singlespeaker
 ```
 
-The above run will save its state in the folder `./singlespeaker.lr0.000300.1.g4.b64`.
+The above run will store checkpoints in `./singlespeaker.lr0.000300.1.g4.b64`.
 
 ### Testing the model
 
-The `run.py` command may be also used to evaluate samples from the model.
+The `run.py` command may be also used to evaluate the model on new audio samples.
 
 ```
 usage: run.py eval [-h] --logname LOGNAME [--out-label OUT_LABEL]
@@ -153,7 +154,7 @@ optional arguments:
   --sr SR               high-res sampling rate
 ```
 
-In the above examples, we would run something along the lines of
+In the above example, we would type:
 
 ```
 python run.py eval \
@@ -164,11 +165,11 @@ python run.py eval \
 ```
 
 This will look at each file specified via the `--wav-file-list` argument (these must be high-resolution samples),
-and create for each file `f.wav` three versions:
+and create for each file `f.wav` three audio samples:
 
-* `f.singlespeaker-out.hr.wav`: high resolution version (should be same as original)
-* `f.singlespeaker-out.lr.wav`: low resolution version processed by the model
-* `f.singlespeaker-out.sr.wav`: super-resoloved version
+* `f.singlespeaker-out.hr.wav`: the high resolution version (should be same as original)
+* `f.singlespeaker-out.lr.wav`: the low resolution version processed by the model
+* `f.singlespeaker-out.sr.wav`: the super-resolved version
 
 These will be found in the same folder as `f.wav`.
 
@@ -176,14 +177,14 @@ These will be found in the same folder as `f.wav`.
 
 We would like to emphasize a few points.
 
-* Machine learning algorithms are only as good as their training data. If you want to apply our method to your own old recordings, you will most likely need to collect your own labeled examples.
-* You will need a very large model for large and diverse datasets (such as the 1M Songs Dataset, for example)
+* Machine learning algorithms are only as good as their training data. If you want to apply our method to your personal recordings, you will most likely need to collect additional labeled examples.
+* You will need a very large model to fit large and diverse datasets (such as the 1M Songs Dataset)
 * Interestingly, super-resolution works better on aliased input (no low-pass filter). This is not reflected well in objective benchmarks, but is noticeable when listening to the samples. For applications like compression (where you control the low-res signal), this may be important.
 * More generally, the model is very sensitive to how low-resolution samples are generated. Even the type of low-pass filter (Butterworth, Chebyshev) will affect performance.
 
 ### Extensions
 
-The same architecture can be used on many time series tasks outside the audio domain. We have successfully used to impute functional genomics data, and denoise brain signal recordings. Stay tuned for more updates!
+The same architecture can be used on many time series tasks outside the audio domain. We have successfully used it to impute functional genomics data and denoise EEG recordings. Stay tuned for more updates!
 
 ## Feedback
 
