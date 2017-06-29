@@ -5,7 +5,7 @@ This repository implements the audio super-resolution model proposed in:
 
 ```
 V. Kuleshov, Z. Enam, and S. Ermon. Audio Super Resolution Using Neural Networks. ICLR 2017 (Workshop track)
-V. Kuleshov, Z. Enam, P. W. Koh, and S. Ermon. Deep Constitutional Time Series Translation, ArXiv 2017
+V. Kuleshov, Z. Enam, P. W. Koh, and S. Ermon. Deep Convolutional Time Series Translation, ArXiv 2017
 ```
 
 ## Installation
@@ -82,20 +82,23 @@ optional arguments:
   --sam SAM             subsampling factor for the data
 ```
 
-The output of the data preparation step are two files in `.h5` format containing, respectively, the training and validation pairs of high/low resolution sound patches.
-Also, you can just run `make` in the corresponding directory, e.g.
+The output of the data preparation step are two `.h5` archives containing, respectively, the training and validation pairs of high/low resolution sound patches.
+You can also generate these by running `make` in the corresponding directory, e.g.
 ```
 cd ./speaker1;
 make;
 ```
 
+This will use a set of default parameters.
+
 ### Audio super resolution tasks
 
-There are two datasets that can be prepared. 
+We have included code to prepare two datasets.
 
 * The single-speaker dataset consists only of VCTK speaker #1; it is relatively quick to train a model (a few hours).
 * The multi-speaker dataset uses the last 8 VCTK speakers for evaluation, and the rest for training; it takes several days to train the model, and several hours to prepare the data.
 
+We suggest starting with the single-speaker dataset.
 
 ### Training the model
 
@@ -127,7 +130,7 @@ For example, to run the model on data prepared for the single speaker dataset, y
 python run.py train \
   --train ../data/vctk/speaker1/vctk-speaker1-train.4.16000.8192.4096.h5 \
   --val ../data/vctk/speaker1/vctk-speaker1-val.4.16000.8192.4096.h5 \
-  -e 200 \
+  -e 120 \
   --batch-size 64 \
   --lr 3e-4 \
   --logname singlespeaker
@@ -167,11 +170,11 @@ python run.py eval \
 This will look at each file specified via the `--wav-file-list` argument (these must be high-resolution samples),
 and create for each file `f.wav` three audio samples:
 
-* `f.singlespeaker-out.hr.wav`: the high resolution version (should be same as original)
+* `f.singlespeaker-out.hr.wav`: the high resolution version
 * `f.singlespeaker-out.lr.wav`: the low resolution version processed by the model
 * `f.singlespeaker-out.sr.wav`: the super-resolved version
 
-These will be found in the same folder as `f.wav`.
+These will be found in the same folder as `f.wav`. Because of how our model is defined, the number of samples in the input must be a multiple of `2**downscaling_layers`; if that's not the case, we will clip the input file (potentially shortening it by a fraction of a second).
 
 ## Remarks
 
@@ -180,7 +183,7 @@ We would like to emphasize a few points.
 * Machine learning algorithms are only as good as their training data. If you want to apply our method to your personal recordings, you will most likely need to collect additional labeled examples.
 * You will need a very large model to fit large and diverse datasets (such as the 1M Songs Dataset)
 * Interestingly, super-resolution works better on aliased input (no low-pass filter). This is not reflected well in objective benchmarks, but is noticeable when listening to the samples. For applications like compression (where you control the low-res signal), this may be important.
-* More generally, the model is very sensitive to how low-resolution samples are generated. Even the type of low-pass filter (Butterworth, Chebyshev) will affect performance.
+* More generally, the model is very sensitive to how low resolution samples are generated. Even the type of low-pass filter (Butterworth, Chebyshev) will affect performance.
 
 ### Extensions
 
