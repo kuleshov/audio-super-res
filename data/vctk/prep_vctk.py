@@ -14,17 +14,27 @@ from scipy.signal import decimate
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--file-list')
-parser.add_argument('--out')
-parser.add_argument('--in-dir', default='~/')
-parser.add_argument('--interpolate', action='store_true')
-parser.add_argument('--low-pass', action='store_true')
-parser.add_argument('--dimension', type=int, default=6400)
-parser.add_argument('--stride', type=int, default=3200)
-parser.add_argument('--scale', type=int, default=2)
-parser.add_argument('--batch-size', type=int, default=128)
+parser.add_argument('--file-list',
+  help='list of input wav files to process')
+parser.add_argument('--in-dir', default='~/',
+  help='folder where input files are located')
+parser.add_argument('--out',
+  help='path to output h5 archive')
+parser.add_argument('--scale', type=int, default=2,
+  help='scaling factor')
+parser.add_argument('--dimension', type=int, default=8192,
+  help='dimension of patches')
+parser.add_argument('--stride', type=int, default=3200,
+  help='stride when extracting patches')
+parser.add_argument('--interpolate', action='store_true', 
+  help='interpolate low-res patches with cubic splines')
+parser.add_argument('--low-pass', action='store_true',
+  help='apply low-pass filter when generating low-res patches')
+parser.add_argument('--batch-size', type=int, default=128,
+  help='we produce # of patches that is a multiple of batch size')
 parser.add_argument('--sr', type=int, default=16000, help='audio sampling rate')
-parser.add_argument('--sam', type=float, default=1.)
+parser.add_argument('--sam', type=float, default=1.,
+  help='subsampling factor for the data')
 
 args = parser.parse_args()
 
