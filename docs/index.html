@@ -1,6 +1,308 @@
-Hello, world!
 
-<audio controls>
-  <source src="http://josesotelo.com/speechsynthesis/files/wav/dimex/raw_best_bidirectional_text_0.wav" type="audio/wav">
-Your browser does not support the audio element.
-</audio>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Using deep convolutional neural networks to upsample audio signals such as speech or music.">
+    <meta name="author" content="Volodymyr Kuleshov">
+    <!-- <link rel="shortcut icon" href="../../assets/ico/favicon.ico"> -->
+
+    <title>Audio Super Resolution</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="offcanvas.css" rel="stylesheet">
+
+    
+  </head>
+
+  <body>
+
+    <div class="container">
+
+    <div class="jumbotron">
+      <h2>Audio Super Resolution with Neural Networks</h2>
+      <!-- <p>Volodymyr Kuleshov, Zayd S. Enam, Stefano Ermon</p> -->
+      <p class="abstract">Using deep convolutional neural networks to upsample audio signals such as speech or music.</p>
+      <p><a class="btn btn-primary" href="https://github.com/kuleshov/audio-super-res">Code</a> <a class="btn btn-primary" href="https://arxiv.org/abs/1708.00853">Paper</a></p> 
+    </div>
+
+    <div>
+    <!-- <h3>Overview</h3> -->
+    <hr>
+    <img src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/docs/img/sr.png" style="width:60%; float: right; margin-right:-20px; margin-top:-10px;">
+    <p>We train neural networks to impute new time-domain samples in an audio signal; this is similar to the image super-resolution problem, where individual audio samples are analogous to pixels.</p>
+
+    <p>For example, in the adjacent figure, we observe the blue audio samples, and we want to "fill-in" the white samples; both are from the same signal (dashed line).</p>
+
+    <p>To solve this underdefined problem, we teach our network how a typical recording "sounds like" and ask it to produce a plausible reconstruction.</p>
+
+    </div>
+
+    <div class="section">
+      <h3>Samples</h3>
+      <hr>
+      <p>We trained our model on utterances from 99 speakers from the VCTK dataset, and super-resolved recordings from the remaining 9 speakers.</p>
+
+      <p>The low-resolution signal has 1/4-th of the high-res samples (for an upscaling ratio of 4x).
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><em>The incidents are not believed to be linked.</em> (Speaker p360, Utterance 059)</div>
+        <div class="panel-body">
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.2.4.hr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">High Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.2.4.lr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Low Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.2.4.pr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Cubic Baseline</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.2.4.sp.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Super Resolution</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><em>One is investment, one is reform.</em> (Speaker p362, Utterance 087)</div>
+        <div class="panel-body">
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.4.4.hr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">High Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.4.4.lr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Low Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.4.4.pr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Cubic Baseline</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.4.4.sp.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Super Resolution</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><em>The difference in the rainbow depends considerably...</em> (Speaker p347, Utterance 021)</div>
+        <div class="panel-body">
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.1.4.hr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">High Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.1.4.lr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Low Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.1.4.pr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Cubic Baseline</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/msp/4/msp.1.4.sp.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Super Resolution</p>
+          </div>
+        </div>
+      </div>
+
+      <p>Here, we train and test on the same speaker. We are now doing 8x upsampling.</p>
+
+      <div class="panel panel-default">
+        <div class="panel-heading"><em>It is linked to the row over proposed changes at the Scottish ballet.</em> (Speaker p225, Utterance 366)</div>
+        <div class="panel-body">
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.8.hr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">High Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.8.lr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Low Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.8.pr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Cubic Baseline</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/sp1/8/sp1.1.8.sp.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Super Resolution</p>
+          </div>
+        </div>
+      </div>
+
+      <p>The model sometimes hallucinates sounds, making interesting mistakes.</p>
+      <div class="panel panel-default">
+        <div class="panel-heading"><em>In short, the national team without Frank, is like football without feet.</em></div>
+        <div class="panel-body">
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/extra/extra.1.4.hr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">High Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/extra/extra.1.4.lr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Low Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/extra/extra.1.4.pr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Super Resolution</p>
+          </div>
+        </div>
+      </div>
+
+
+      <p>We also ran our model on a dataset of piano sonatas. Here is an example (4x upsampling).</p>
+      <div class="panel panel-default">
+        <div class="panel-heading">Piano Example</div>
+        <div class="panel-body">
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.1.4.hr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">High Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.1.4.lr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Low Resolution</p>
+          </div>
+          <div class="audio">
+            <audio controls="">
+              <source src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/samples/piano/4/piano.1.4.pr.wav" type="audio/wav" />
+              Your browser does not support the audio element.
+            </audio>
+            <p style="font-size:14px" align="center">Super Resolution</p>
+          </div>
+        </div>
+      </div>
+
+    We have more samples on Github.
+
+    </div>
+
+    <div class="section">
+      <h3>Method</h3>
+      <hr>
+      <p>Our model consists of a series of downsampling blocks, followed by upsampling blocks. </p>
+      <p>Each block performs a convolution, dropout, and applies a non-linearity. The two types of blocks are connected by stacking residual connections; this allows us to reuse low-resolution features during upsampling.</p> 
+      <p>Upscaling is done using dimension (subpixel) shuffling.· We also start with initial cubic upsampling layer, and connect it to the output with an additive residual connection.<p>
+      
+      <div align="center"><img src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/docs/img/generator2-compact.png" style="width: 100%; margin-bottom: 10px"></div>
+
+      <p>It follows from basic signal processing theory that our method effectively predicts the high frequencies of a signal from the low frequencies.</p>
+
+      <div align="center">
+        <img src="https://raw.githubusercontent.com/kuleshov/audio-super-res/master/docs/img/spectrogram.png" style="width:100%; margin-top: 10px; margin-bottom: 10px">
+        <p class="caption">Spectrograms showing (from left to right) a high-resolution signal, its low-resolution version, a reconstruction using cubic interpolation, and the output of our model.</p>
+      </div>
+    </div>
+
+    <div>
+      <h3>Remarks</h3>
+      <hr>
+      <!-- <p>We would like to emphasize a few points.</p> -->
+
+      <p> Machine learning algorithms are only as good as their training data. If you want to apply our method to your personal recordings, you will most likely need to collect additional labeled examples.</p>
+    
+      <p> Interestingly, super-resolution works better on aliased input (no low-pass filter). This is not reflected well in objective benchmarks, but is noticeable when listening to the samples. For applications like compression (where you control the low-res signal), this may be important.</p>
+      <p> More generally, the model is very sensitive to how low resolution samples are generated. Even using a different low-pass filter (Butterworth, Chebyshev) at test time will reduce performance.</p>
+      </ul>
+    </div>
+
+    <div style="padding-top:30px">
+    <h3>References</h3>
+    <hr>
+    <p>For full details, have a look at our papers.</p>
+    <div class="list-group">
+      <a href="https://arxiv.org/abs/1708.00853" class="list-group-item">
+        <h4 class="list-group-item-heading">Audio Super Resolution with Neural Networks</h4>
+        <p class="list-group-item-text">Volodymyr Kuleshov, Zayd S. Enam, Stefano Ermon. ICLR 2017 (Workshop Track)</p>
+      </a>
+      <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Time Series Translation with Deep Convolutional Neural Networks</h4>
+        <p class="list-group-item-text">Volodymyr Kuleshov, Zayd S. Enam, Pang Wei Koh, Stefano Ermon. ArXiv 2017</p>
+      </a>
+    </div>
+    <p>Send feedback to <a href="http://web.stanford.edu/~kuleshov/">Volodymyr Kuleshov</a></p>
+    </div>
+
+    <hr>
+      <footer>
+        <p>&copy; 2017</p>
+      </footer>
+
+
+    </div><!--/.container-->
+
+    </div><!--/.container-->
+  </body>
+</html>
