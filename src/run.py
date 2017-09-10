@@ -23,6 +23,9 @@ def make_parser():
   train_parser = subparsers.add_parser('train')
   train_parser.set_defaults(func=train)
 
+  train_parser.add_argument('--model', default='audiounet',
+    choices=('audiounet', 'audiolstm', 'audiohybrid'),
+    help='model to train')
   train_parser.add_argument('--train', required=True,
     help='path to h5 archive of training patches')
   train_parser.add_argument('--val', required=True,
@@ -98,8 +101,18 @@ def get_model(args, n_dim, r, from_ckpt=False, train=True):
     opt_params = default_opt
 
   # create model
-  model = models.AudioUNet(from_ckpt=from_ckpt, n_dim=n_dim, r=r, 
-                               opt_params=opt_params, log_prefix=args.logname)
+  if args.model == 'audiounet':
+    model = models.AudioUNet(from_ckpt=from_ckpt, n_dim=n_dim, r=r, 
+                                 opt_params=opt_params, log_prefix=args.logname)
+  elif args.model == 'audiolstm':
+    model = models.AudioLSTM(from_ckpt=from_ckpt, n_dim=n_dim, r=r, 
+                                 opt_params=opt_params, log_prefix=args.logname)
+  elif args.model == 'audiohybrid':
+    model = models.AudioHybrid(from_ckpt=from_ckpt, n_dim=n_dim, r=r, 
+                                 opt_params=opt_params, log_prefix=args.logname)
+  else:
+    raise ValueError('Invalid model')
+    
   return model
 
 def main():
