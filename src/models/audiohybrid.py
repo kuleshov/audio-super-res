@@ -13,7 +13,7 @@ from keras.layers.convolutional import Convolution1D, UpSampling1D
 from keras.layers.recurrent import LSTM
 from keras.layers.normalization import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
-from keras.initializations import normal, orthogonal
+from keras.initializers import Orthogonal
 
 # ----------------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ class AudioHybrid(Model):
       for l, nf, fs in zip(range(L), n_filters, n_filtersizes):
         with tf.name_scope('downsc_conv%d' % l):
           x = (Convolution1D(nb_filter=nf, filter_length=fs, 
-                  activation=None, border_mode='same', init=orthogonal_init,
+                  activation=None, border_mode='same', init=Orthogonal(),
                   subsample_length=4))(x)
           # if l > 0: x = BatchNormalization(mode=2)(x)
           x = LeakyReLU(0.2)(x)
@@ -59,7 +59,7 @@ class AudioHybrid(Model):
       # bottleneck layer
       with tf.name_scope('bottleneck_conv'):
           x = (Convolution1D(nb_filter=n_filters[-1], filter_length=n_filtersizes[-1], 
-                  activation=None, border_mode='same', init=orthogonal_init,
+                  activation=None, border_mode='same', init=Orthogonal(),
                   subsample_length=4))(x)
           x = Dropout(p=0.5)(x)
           # x = BatchNormalization(mode=2)(x)
@@ -72,7 +72,7 @@ class AudioHybrid(Model):
         with tf.name_scope('upsc_conv%d' % l):
           # (-1, n/2, 2f)
           x = (Convolution1D(nb_filter=4*nf, filter_length=fs, 
-                  activation=None, border_mode='same', init=orthogonal_init))(x)
+                  activation=None, border_mode='same', init=Orthogonal()))(x)
           # x = BatchNormalization(mode=2)(x)
           x = Dropout(p=0.5)(x)
           x = Activation('relu')(x)
@@ -85,7 +85,7 @@ class AudioHybrid(Model):
       # final conv layer
       with tf.name_scope('lastconv'):
         x = Convolution1D(nb_filter=4, filter_length=9, 
-                activation=None, border_mode='same', init=normal_init)(x)    
+                activation=None, border_mode='same', init=Orthogonal())(x)    
         x = SubPixel1D(x, r=4) 
         print x.get_shape()
 
@@ -125,12 +125,6 @@ class AudioHybrid(Model):
 
 # ----------------------------------------------------------------------------
 # helpers
-
-def normal_init(shape, dim_ordering='tf', name=None): 
-  return normal(shape, scale=1e-3, name=name, dim_ordering=dim_ordering)
-
-def orthogonal_init(shape, dim_ordering='tf', name=None): 
-  return orthogonal(shape, name=name, dim_ordering=dim_ordering)  
 
 def spline_up(x_lr, r):
   x_lr = x_lr.flatten()

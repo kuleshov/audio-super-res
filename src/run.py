@@ -112,7 +112,7 @@ def get_model(args, n_dim, r, from_ckpt=False, train=True):
                                  opt_params=opt_params, log_prefix=args.logname)
   else:
     raise ValueError('Invalid model')
-    
+
   return model
 
 def main():
