@@ -85,7 +85,8 @@ class Model(object):
       train_op = self.create_updates(params, grads, alpha, opt_params)
 
     # initialize the optimizer variabLes
-    optimizer_vars = [ v for v in tf.global_variables() if 'optimizer/' in v.name ]
+    optimizer_vars = [ v for v in tf.global_variables() if 'optimizer/' in v.name
+                                                        or 'Adam' in v.name ]
     init = tf.variables_initializer(optimizer_vars)
     self.sess.run(init)
 
