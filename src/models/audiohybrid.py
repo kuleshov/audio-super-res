@@ -14,6 +14,7 @@ from keras.layers.recurrent import LSTM
 from keras.layers.normalization import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
 from keras.initializers import Orthogonal
+from keras.layers.convolutional_recurrent import ConvLSTM2D
 
 # ----------------------------------------------------------------------------
 
@@ -50,7 +51,7 @@ class AudioHybrid(Model):
         with tf.name_scope('downsc_conv%d' % l):
           x = (Convolution1D(nb_filter=nf, filter_length=fs, 
                   activation=None, border_mode='same', init=Orthogonal(),
-                  subsample_length=4))(x)
+                  subsample_length=2))(x)
           # if l > 0: x = BatchNormalization(mode=2)(x)
           x = LeakyReLU(0.2)(x)
           print 'D-Block: ', x.get_shape()
@@ -60,56 +61,51 @@ class AudioHybrid(Model):
       with tf.name_scope('bottleneck_conv'):
           x = (Convolution1D(nb_filter=n_filters[-1], filter_length=n_filtersizes[-1], 
                   activation=None, border_mode='same', init=Orthogonal(),
-                  subsample_length=4))(x)
+                  subsample_length=2))(x)
           x = Dropout(p=0.5)(x)
           # x = BatchNormalization(mode=2)(x)
           x = LeakyReLU(0.2)(x)
 
-          x = LSTM(512, activation='relu', return_sequences=True)(x)
+          # reshape input into the convolutional LSTM
+          # input of (-1, 512, 512) becomes (-1, 32, 1, 16, 512)
+          x_shape = tf.shape(x)
+          n_steps = 32
+          n_block = x_shape[1] / n_steps
+          n_chans = n_filters[-1]
+          x_rnn_in = tf.reshape(x, shape=(-1, n_steps, 1, n_block, n_chans))
+
+          # apply an LSTM layer
+          x_rnn = ConvLSTM2D(filters=n_filters[-1], kernel_size=(1,n_filtersizes[-1]), 
+                              input_shape=(n_steps, 1, n_block, n_chans),
+                              padding='same', return_sequences=True, implementation=2)(x_rnn_in)
+          
+          # put in back to the original shape
+          x_rnn = tf.reshape(x_rnn, x_shape)
+
+          # add addiive skip connection
+          x = merge([x, x_rnn], mode='sum')
 
       # upsampling layers
       for l, nf, fs, l_in in reversed(zip(range(L), n_filters, n_filtersizes, downsampling_l)):
         with tf.name_scope('upsc_conv%d' % l):
           # (-1, n/2, 2f)
-          x = (Convolution1D(nb_filter=4*nf, filter_length=fs, 
+          x = (Convolution1D(nb_filter=2*nf, filter_length=fs, 
                   activation=None, border_mode='same', init=Orthogonal()))(x)
           # x = BatchNormalization(mode=2)(x)
           x = Dropout(p=0.5)(x)
           x = Activation('relu')(x)
           # (-1, n, f)
-          x = SubPixel1D(x, r=4) 
+          x = SubPixel1D(x, r=2) 
           # (-1, n, 2f)
           x = merge([x, l_in], mode='concat', concat_axis=-1) 
           print 'U-Block: ', x.get_shape()
 
       # final conv layer
       with tf.name_scope('lastconv'):
-        x = Convolution1D(nb_filter=4, filter_length=9, 
+        x = Convolution1D(nb_filter=2, filter_length=9, 
                 activation=None, border_mode='same', init=Orthogonal())(x)    
-        x = SubPixel1D(x, r=4) 
+        x = SubPixel1D(x, r=2) 
         print x.get_shape()
-
-      # # upsampling layers
-      # for l, nf, fs, l_in in reversed(zip(range(L), n_filters, n_filtersizes, downsampling_l)):
-      #   with tf.name_scope('upsc_conv%d' % l):
-      #     # (-1, n, f)
-      #     x = UpSampling1D(2)(x)
-      #     # (-1, n, f)
-      #     x = (Convolution1D(nb_filter=nf, filter_length=fs, 
-      #             activation=None, border_mode='same', init=orthogonal_init))(x)
-      #     # x = BatchNormalization(mode=2)(x)
-      #     #x = Dropout(p=0.5)(x)
-      #     x = Activation('relu')(x)
-      #     # (-1, n, 2f)
-      #     x = merge([x, l_in], mode='concat', concat_axis=-1) 
-      #     print 'U-Block: ', x.get_shape()
-
-      # # final conv layer
-      # with tf.name_scope('lastconv'):
-      #   x = UpSampling1D(2)(x)
-      #   x = Convolution1D(nb_filter=1, filter_length=65, 
-      #           activation=None, border_mode='same', init=normal_init)(x)
-      #   print x.get_shape()
 
       g = merge([x, X], mode='sum')
 

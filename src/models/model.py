@@ -33,8 +33,8 @@ class Model(object):
       pass # we will instead load the graph from a checkpoint
     else:
       # create input vars
-      X = tf.placeholder(tf.float32, shape=(None, 8192, 1), name='X')
-      Y = tf.placeholder(tf.float32, shape=(None, 8192, 1), name='Y')
+      X = tf.placeholder(tf.float32, shape=(None, None, 1), name='X')
+      Y = tf.placeholder(tf.float32, shape=(None, None, 1), name='Y')
       alpha = tf.placeholder(tf.float32, shape=(), name='alpha') # weight multiplier
 
       # save inputs
