@@ -41,7 +41,7 @@ class AudioLSTM(Model):
 
       print 'building model...'
 
-      L=3
+      L=1
 
       # we reshape the input into blocks of length 128, so that the sequence is length 64
       # that way, it will not be too hard to train the RNN
