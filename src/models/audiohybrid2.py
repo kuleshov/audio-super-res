@@ -9,15 +9,15 @@ from layers.subpixel import SubPixel1D, SubPixel1D_v2
 from keras import backend as K
 from keras.layers import merge
 from keras.layers.core import Activation, Dropout
-from keras.layers.convolutional import Convolution1D
+from keras.layers.convolutional import Convolution1D, UpSampling1D
+from keras.layers.recurrent import LSTM
 from keras.layers.normalization import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
 from keras.initializers import Orthogonal
 
 # ----------------------------------------------------------------------------
 
-class AudioUNet(Model):
-  """Generic tensorflow model training code"""
+class AudioHybrid2(Model):
 
   def __init__(self, from_ckpt=False, n_dim=None, r=2,
                opt_params=default_opt, log_prefix='./run'):
@@ -37,6 +37,7 @@ class AudioUNet(Model):
       # dim/layer: 4096, 2048, 1024, 512, 256, 128,  64,  32,
       # n_filters = [  64,  128,  256, 384, 384, 384, 384, 384]
       n_filters = [  128,  256,  512, 512, 512, 512, 512, 512]
+      n_blocks = [ 128, 64, 32, 16, 8]
       # n_filters = [  256,  512,  512, 512, 512, 1024, 1024, 1024]
       # n_filtersizes = [129, 65,   33,  17,  9,  9,  9, 9]
       # n_filtersizes = [31, 31,   31,  31,  31,  31,  31, 31]
@@ -44,6 +45,50 @@ class AudioUNet(Model):
       downsampling_l = []
 
       print 'building model...'
+
+      def _make_normalizer(x_in, n_filters, n_block):
+        """applies an lstm layer on top of x_in"""        
+        x_shape = tf.shape(x_in)
+        # n_steps = x_shape[1] / n_block # will be 32 at training
+        n_steps = 32
+
+        # first, apply standard conv layer to reduce the dimension
+        # input of (-1, 4096, 128) becomes (-1, 32, 128)
+        # input of (-1, 512, 512) becomes (-1, 32, 512)
+        x_in_down = (Convolution1D(nb_filter=n_filters, filter_length=n_block, 
+                  activation=None, border_mode='valid', init=Orthogonal(),
+                  subsample_length=n_block))(x_in)
+
+        # this will equal
+        # (-1, n_steps, n_filters)
+
+        # apply an LSTM layer
+        x_rnn = LSTM(n_filters, return_sequences=True, implementation=2)(x_in_down)
+
+        # output: (-1, n_steps, n_filters)
+        return x_rnn
+
+      def _apply_normalizer(x_in, x_norm, n_filters, n_block):
+        x_shape = tf.shape(x_in)
+        # n_steps = x_shape[1] / n_block # will be 32 at training
+        n_steps = 32
+        # n_filters = x_shape[2]
+
+        # x_in shape: (-1, n_steps * n_block, n_filters)
+        # x_norm shape: (-1, n_steps, n_filters)
+
+        # reshape input into blocks
+        x_in = tf.reshape(x_in, shape=(-1, n_steps, n_block, n_filters))
+        x_norm = tf.reshape(x_norm, shape=(-1, n_steps, 1, n_filters))
+
+        # multiply
+        x_out = x_norm * x_in
+
+        # return to original shape
+        x_out = tf.reshape(x_out, shape=x_shape)
+
+        return x_out
+
 
       # downsampling layers
       for l, nf, fs in zip(range(L), n_filters, n_filtersizes):
@@ -53,6 +98,12 @@ class AudioUNet(Model):
                   subsample_length=2))(x)
           # if l > 0: x = BatchNormalization(mode=2)(x)
           x = LeakyReLU(0.2)(x)
+
+          # create and apply the normalizer
+          nb = 128 / (2**l)
+          x_norm = _make_normalizer(x, nf, nb)
+          x = _apply_normalizer(x, x_norm, nf, nb)
+
           print 'D-Block: ', x.get_shape()
           downsampling_l.append(x)
 
@@ -65,6 +116,11 @@ class AudioUNet(Model):
           # x = BatchNormalization(mode=2)(x)
           x = LeakyReLU(0.2)(x)
 
+          # create and apply the normalizer
+          nb = 128 / (2**L)
+          x_norm = _make_normalizer(x, n_filters[-1], nb)
+          x = _apply_normalizer(x, x_norm, n_filters[-1], nb)
+
       # upsampling layers
       for l, nf, fs, l_in in reversed(zip(range(L), n_filters, n_filtersizes, downsampling_l)):
         with tf.name_scope('upsc_conv%d' % l):
@@ -76,6 +132,11 @@ class AudioUNet(Model):
           x = Activation('relu')(x)
           # (-1, n, f)
           x = SubPixel1D(x, r=2) 
+
+          # create and apply the normalizer
+          x_norm = _make_normalizer(x, nf, nb)
+          x = _apply_normalizer(x, x_norm, nf, nb)
+
           # (-1, n, 2f)
           x = merge([x, l_in], mode='concat', concat_axis=-1) 
           print 'U-Block: ', x.get_shape()
@@ -88,7 +149,6 @@ class AudioUNet(Model):
         print x.get_shape()
 
       g = merge([x, X], mode='sum')
-      # g = x
 
     return g
 

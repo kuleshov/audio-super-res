@@ -24,7 +24,7 @@ def make_parser():
   train_parser.set_defaults(func=train)
 
   train_parser.add_argument('--model', default='audiounet',
-    choices=('audiounet', 'audiolstm', 'audiohybrid'),
+    choices=('audiounet', 'audiolstm', 'audiohybrid', 'audiohybrid2'),
     help='model to train')
   train_parser.add_argument('--train', required=True,
     help='path to h5 archive of training patches')
@@ -66,6 +66,10 @@ def train(args):
   # get data
   X_train, Y_train = load_h5(args.train)
   X_val, Y_val = load_h5(args.val)
+
+  # transponse to match tensorflow (batch, height, width, chan) format
+  # X_train, X_val = X_train.transpose([0,2,1]), X_val.transpose([0,2,1])
+  # Y_train, Y_val = Y_train.transpose([0,2,1]), Y_val.transpose([0,2,1])
 
   # determine super-resolution level
   n_dim, n_chan = Y_train[0].shape
@@ -110,6 +114,9 @@ def get_model(args, n_dim, r, from_ckpt=False, train=True):
   elif args.model == 'audiohybrid':
     model = models.AudioHybrid(from_ckpt=from_ckpt, n_dim=n_dim, r=r, 
                                  opt_params=opt_params, log_prefix=args.logname)
+  elif args.model == 'audiohybrid2':
+    model = models.AudioHybrid2(from_ckpt=from_ckpt, n_dim=n_dim, r=r, 
+                                 opt_params=opt_params, log_prefix=args.logname)  
   else:
     raise ValueError('Invalid model')
 
