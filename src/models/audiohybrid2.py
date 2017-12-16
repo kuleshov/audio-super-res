@@ -49,8 +49,9 @@ class AudioHybrid2(Model):
       def _make_normalizer(x_in, n_filters, n_block):
         """applies an lstm layer on top of x_in"""        
         x_shape = tf.shape(x_in)
-        # n_steps = x_shape[1] / n_block # will be 32 at training
-        n_steps = 32
+        n_steps = x_shape[1] / n_block # will be 32 at training
+        # n_steps = 32
+        # n_filters = x_shape[2]
 
         # first, apply standard conv layer to reduce the dimension
         # input of (-1, 4096, 128) becomes (-1, 32, 128)
@@ -70,8 +71,8 @@ class AudioHybrid2(Model):
 
       def _apply_normalizer(x_in, x_norm, n_filters, n_block):
         x_shape = tf.shape(x_in)
-        # n_steps = x_shape[1] / n_block # will be 32 at training
-        n_steps = 32
+        n_steps = x_shape[1] / n_block # will be 32 at training
+        # n_steps = 32
         # n_filters = x_shape[2]
 
         # x_in shape: (-1, n_steps * n_block, n_filters)
