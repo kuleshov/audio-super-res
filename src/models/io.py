@@ -21,14 +21,17 @@ def load_h5(h5_path):
   return X, Y
 
 def upsample_wav(wav, args, model):
+  
   # load signal
   x_hr, fs = librosa.load(wav, sr=args.sr)
 
+  x_lr_t = decimate(x_hr, args.r)
+  
+  # pad to mutliple of patch size to ensure model runs over entire sample
+  x_hr = np.pad(x_hr, (0, args.patch_size - (x_hr.shape[0] % args.patch_size)), 'constant', constant_values=(0,0))
+  
   # downscale signal
-  # x_lr = np.array(x_hr[0::args.r])
   x_lr = decimate(x_hr, args.r)
-  # x_lr = decimate(x_hr, args.r, ftype='fir', zero_phase=True)
-  # x_lr = downsample_bt(x_hr, args.r)
 
   # upscale the low-res version
   P = model.predict(x_lr.reshape((1,len(x_lr),1)))
@@ -36,12 +39,12 @@ def upsample_wav(wav, args, model):
 
   # crop so that it works with scaling ratio
   x_hr = x_hr[:len(x_pr)]
-  x_lr = x_lr[:len(x_pr)]
+  x_lr_t = x_lr_t[:len(x_pr)] 
 
   # save the file
   outname = wav + '.' + args.out_label
+  librosa.output.write_wav(outname + '.lr.wav', x_lr_t, fs / args.r) 
   librosa.output.write_wav(outname + '.hr.wav', x_hr, fs)  
-  librosa.output.write_wav(outname + '.lr.wav', x_lr, fs / args.r)  
   librosa.output.write_wav(outname + '.pr.wav', x_pr, fs)  
 
   # save the spectrum
