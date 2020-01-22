@@ -16,7 +16,7 @@ default_opt   = { 'alg': 'adam', 'lr': 1e-4, 'b1': 0.99, 'b2': 0.999,
 									'layers': 2, 'batch_size': 128 }
 
 class Model(object):
-		"""Generic tensorflow model training code"""
+	"""Generic tensorflow model training code"""
 
 	def __init__(self, from_ckpt=False, n_dim=None, r=2,
 							opt_params=default_opt, log_prefix='./run'):
@@ -204,7 +204,7 @@ class Model(object):
 		avg_snr = np.mean(snr, axis=0)
 		return avg_snr
 
-	def fit(self, X_train, Y_train, X_val, Y_val, n_epoch=100, r=4, speaker="single", grocery="false", piano="false"):      
+	def fit(self, X_train, Y_train, X_val, Y_val, n_epoch=100, r=4, speaker="single", grocery="false", piano="false", calc_full_snr=False):      
 		# initialize log directory                  
 		if tf.gfile.Exists(self.logdir): tf.gfile.DeleteRecursively(self.logdir)
 		tf.gfile.MakeDirs(self.logdir)
@@ -279,7 +279,7 @@ class Model(object):
 				
 				## calcuate the full snr (currenty on each epoch)
 				full_snr = 0
-				if(train_data.epochs_completed % 1 == 0 and grocery == 'false'):
+				if(calc_full_snr and train_data.epochs_completed % 1 == 0 and grocery == 'false'):
 						s1 = ""
 						s2 = ""
 						if piano == "true":
@@ -331,7 +331,7 @@ class Model(object):
 
 		return feed_dict
 
-	ddef eval_err(self, X, Y, n_batch=128):
+	def eval_err(self, X, Y, n_batch=128):
 		batch_iterator = iterate_minibatches(X, Y, n_batch, shuffle=True)
 		l2_loss_op, l2_snr_op = tf.get_collection('losses')
 		y_flat, p_flat = tf.get_collection('hrs')
