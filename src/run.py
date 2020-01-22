@@ -52,6 +52,7 @@ def make_parser():
   train_parser.add_argument('--grocery', default='false', choices=('true', 'false'))
   train_parser.add_argument('--pool_size', type=int, default=4, help='size of pooling window')
   train_parser.add_argument('--strides', type=int, default=4, help='pooling stide')
+  train_parser.add_argument('--full', default='false', choices=('true', 'false'))
 
   # eval
   eval_parser = subparsers.add_parser('eval')
@@ -80,6 +81,8 @@ def make_parser():
 # ----------------------------------------------------------------------------
 
 def train(args):
+  full = True if args.full == 'true' else False
+    
   # get data
   if(args.grocery == 'false'):
     X_train, Y_train = load_h5(args.train)
@@ -115,7 +118,7 @@ def train(args):
     # create model
     model = get_model(args, n_dim, r, from_ckpt=False, train=True)
     # train model
-    model.fit(X_train, Y_train, X_val, Y_val, n_epoch=args.epochs, r=args.r, speaker=args.speaker, grocery=args.grocery, piano=args.piano)
+    model.fit(X_train, Y_train, X_val, Y_val, n_epoch=args.epochs, r=args.r, speaker=args.speaker, grocery=args.grocery, piano=args.piano, calc_full_snr = full)
 
 def eval(args):
   # load model
