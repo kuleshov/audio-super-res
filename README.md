@@ -131,6 +131,9 @@ optional arguments:
   --speaker              number of speakers being trained on (single or multi). Defaults to single
   --pools_size          size of pooling window
   --strides             size of pooling strides
+  --full                false by default--whether to calculate the "full" snr after each epoch. The "full" snr 
+                        is the snr acorss the non-patched data file, rather than the average snr over all the 
+                        patches which is calculated by default
 ```
 Note: to generate the data needed for the grocery imputation experiment, download train.csv.7z from 
 https://www.kaggle.com/c/favorita-grocery-sales-forecasting/data into the data/grocery/grocery directory, 
@@ -152,6 +155,7 @@ python run.py train \
   --piano false \
   --pool_size 8 \
   --strides 8
+  --full true
 ```
 
 The above run will store checkpoints in `./singlespeaker.lr0.000300.1.g4.b64`.
