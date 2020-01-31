@@ -264,7 +264,7 @@ class Model(object):
 				objectives_summary = tf.Summary()
 				objectives_summary.value.add(tag='tr_l2_loss', simple_value=tr_l2_loss)
 				objectives_summary.value.add(tag='tr_l2_snr', simple_value=tr_l2_snr)
-				objectives_summary.value.add(tag='va_l2_snr', simple_value=va_l2_loss)
+				objectives_summary.value.add(tag='va_l2_snr', simple_value=va_l2_snr)
 				objectives_summary.value.add(tag='tr_lsd', simple_value=tr_lsd)
 				objectives_summary.value.add(tag='va_lsd', simple_value=va_lsd)
 
