@@ -258,7 +258,7 @@ class Model(object):
 				print "  training l2_loss/segsnr/LSD:\t\t{:.6f}\t{:.6f}\t{:.6f}".format(
 					tr_l2_loss, tr_l2_snr, tr_lsd)
 				print "  validation l2_loss/segsnr/LSD:\t\t{:.6f}\t{:.6f}\t{:.6f}".format(
-					va_l2_loss, va_l2_snr, tr_lsd)
+					va_l2_loss, va_l2_snr, va_lsd)
 
 				# compute summaries for overall loss
 				objectives_summary = tf.Summary()
