@@ -4,8 +4,10 @@ Audio Super Resolution Using Neural Networks
 This repository implements the audio super-resolution model proposed in:
 
 ```
-S. Birnbaum, V. Kuleshov, Z. Enam, P. W.. Koh, and S. Ermon. Temporal FiLM: Capturing Long-Range Sequence Dependencies with Feature-Wise Modulations. NIPS 2019
-V. Kuleshov, Z. Enam, P. W. Koh, and S. Ermon. Deep Convolutional Time Series Translation, ArXiv 2017
+S. Birnbaum, V. Kuleshov, Z. Enam, P. W.. Koh, and S. Ermon. Temporal FiLM: Capturing Long-Range Sequence Dependencies with Feature-Wise Modulations. NeurIPS 2019
+V. Kuleshov, S. Birnbaum, Z. Enam, P. W. Koh, S. Ermon Time Series Super Resolution with Temporal Adaptive Batch Normalization. NIPS 2018 Spatiotemporal (workshop track)
+V. Kuleshov, Z. Enam, and S. Ermon. Audio Super Resolution Using Neural Networks. ICLR 2017 (Workshop track)
+V. Kuleshov, Z. Enam, P. W. Koh, and S. Ermon. Deep Convolutional Time Series Translation. ArXiv 2017
 ```
 
 ## Installation
