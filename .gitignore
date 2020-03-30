@@ -1,3 +1,9 @@
 .DS_Store
 sftp-config.json
 *.pyc
+*.wav
+*.npy
+*.h5
+src/*lr0*
+data/vctk/speaker1/*full*
+data/vctk/multispeaker/*full*

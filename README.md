@@ -4,8 +4,10 @@ Audio Super Resolution Using Neural Networks
 This repository implements the audio super-resolution model proposed in:
 
 ```
+S. Birnbaum, V. Kuleshov, Z. Enam, P. W.. Koh, and S. Ermon. Temporal FiLM: Capturing Long-Range Sequence Dependencies with Feature-Wise Modulations. NeurIPS 2019
+V. Kuleshov, S. Birnbaum, Z. Enam, P. W. Koh, S. Ermon Time Series Super Resolution with Temporal Adaptive Batch Normalization. NIPS 2018 Spatiotemporal (workshop track)
 V. Kuleshov, Z. Enam, and S. Ermon. Audio Super Resolution Using Neural Networks. ICLR 2017 (Workshop track)
-V. Kuleshov, Z. Enam, P. W. Koh, and S. Ermon. Deep Convolutional Time Series Translation, ArXiv 2017
+V. Kuleshov, Z. Enam, P. W. Koh, and S. Ermon. Deep Convolutional Time Series Translation. ArXiv 2017
 ```
 
 ## Installation
@@ -14,12 +16,12 @@ V. Kuleshov, Z. Enam, P. W. Koh, and S. Ermon. Deep Convolutional Time Series Tr
 
 The model is implemented in Tensorflow and Keras and uses several additional libraries. Specifically, we used:
 
-* `tensorflow==0.12.1`
+* `tensorflow==1.13.1`
 * `keras==1.2.1`
-* `numpy==1.12.0`
-* `scipy==0.18.1`
+* `numpy==1.16.4`
+* `scipy==1.2.1`
 * `librosa==0.4.3`
-* `h5py==2.6.0`
+* `h5py==2.9.0`
 * `matplotlib==1.5.1`
 
 ### Setup
@@ -37,9 +39,7 @@ cd audio-super-res;
 
 The repository is structured as follows.
 
-* `./samples`: audio samples from the model
 * `./src`: model source code
-* `./docs`: html source code for the project webpage
 * `./data`: code to download the model data
 
 ### Retrieving data
@@ -71,15 +71,15 @@ optional arguments:
   --out OUT             path to output h5 archive
   --scale SCALE         scaling factor
   --dimension DIMENSION
-                        dimension of patches
+                        dimension of patches (use -1 for no patching)
   --stride STRIDE       stride when extracting patches
   --interpolate         interpolate low-res patches with cubic splines
   --low-pass            apply low-pass filter when generating low-res patches
   --batch-size BATCH_SIZE
                         we produce # of patches that is a multiple of batch
                         size
-  --sr SR               audio sampling rate
-  --sam SAM             subsampling factor for the data
+  --sr SR               audio sampling rate  
+  --sam SAM             subsampling factor for the data (only applicable for multispeaker data)
 ```
 
 The output of the data preparation step are two `.h5` archives containing, respectively, the training and validation pairs of high/low resolution sound patches.
@@ -107,7 +107,8 @@ Running the model is handled by the `src/run.py` script.
 ```
 usage: run.py train [-h] --train TRAIN --val VAL [-e EPOCHS]
                     [--batch-size BATCH_SIZE] [--logname LOGNAME]
-                    [--layers LAYERS] [--alg ALG] [--lr LR]
+                    [--layers LAYERS] [--alg ALG] [--lr LR] [--model MODEL] 
+                    [--r R] [--piano PIANO] [--grocery GROCERY]
 
 optional arguments:
   -h, --help            show this help message and exit
@@ -122,7 +123,23 @@ optional arguments:
                         network
   --alg ALG             optimization algorithm
   --lr LR               learning rate
+  --model               the model to use for training (audiounet, audiotfilm, 
+                                                       dnn, or spline). Defaults to audiounet.
+  --r                   the upscaling ratio of the data: make sure that the appropriate 
+                        datafile have been generated (note: to generate data with different
+                        scaling ratios change the SCA parameter in the makefile)
+  --piano               false by default--make true to train on piano data 
+  --grocery             false by default--make true to train on grocery imputation data
+  --speaker              number of speakers being trained on (single or multi). Defaults to single
+  --pools_size          size of pooling window
+  --strides             size of pooling strides
+  --full                false by default--whether to calculate the "full" snr after each epoch. The "full" snr 
+                        is the snr acorss the non-patched data file, rather than the average snr over all the 
+                        patches which is calculated by default
 ```
+Note: to generate the data needed for the grocery imputation experiment, download train.csv.7z from 
+https://www.kaggle.com/c/favorita-grocery-sales-forecasting/data into the data/grocery/grocery directory, 
+unzip the csv, and run prep_grocery.py from the data/grocery directory.
 
 For example, to run the model on data prepared for the single speaker dataset, you would type:
 
@@ -133,10 +150,19 @@ python run.py train \
   -e 120 \
   --batch-size 64 \
   --lr 3e-4 \
-  --logname singlespeaker
+  --logname singlespeaker \
+  --model audiotfilm \
+  --r 4 \
+  --layers 4 \
+  --piano false \
+  --pool_size 8 \
+  --strides 8
+  --full true
 ```
 
 The above run will store checkpoints in `./singlespeaker.lr0.000300.1.g4.b64`.
+
+Note on the models: audiotfilm is the best model.
 
 ### Testing the model
 
@@ -164,7 +190,10 @@ python run.py eval \
   --logname ./singlespeaker.lr0.000300.1.g4.b64/model.ckpt-20101 \
   --out-label singlespeaker-out \
   --wav-file-list ../data/vctk/speaker1/speaker1-val-files.txt \
-  --r 4
+  --r 4 \
+  --pool_size 8 \
+  --strides 8 \
+  --model audiotfilm
 ```
 
 This will look at each file specified via the `--wav-file-list` argument (these must be high-resolution samples),
@@ -175,6 +204,35 @@ and create for each file `f.wav` three audio samples:
 * `f.singlespeaker-out.sr.wav`: the super-resolved version
 
 These will be found in the same folder as `f.wav`. Because of how our model is defined, the number of samples in the input must be a multiple of `2**downscaling_layers`; if that's not the case, we will clip the input file (potentially shortening it by a fraction of a second).
+
+### Keras Layer
+`keras_layer.py` implements the TFiLM layer as a customer Keras layer. The below code illustrates how to use this custom layer.
+
+```
+from keras.layers import Input, Dense, Flatten, Lambda
+from keras.models import Model
+import tensorflow as tf
+
+### Insert definition of TFiLM layer here. ####
+
+x = np.random.random((2, 100, 50))
+y = np.zeros((2))
+
+inputs = Input(shape=(100, 50))
+l = TFiLM(2)(inputs)
+l = Flatten()(x)
+outputs = Dense(1, activation='sigmoid')(l)
+
+
+# This creates a model that includes
+# the Input layer, a TFILM layer, and a dense layer
+model = Model(inputs=inputs, outputs=outputs)
+model.compile(optimizer='rmsprop',
+              loss='binary_crossentropy',
+              metrics=['accuracy'])
+print(model.summary())
+model.fit(x, y, epochs=10)  # starts training
+```
 
 ## Remarks
 
