@@ -247,4 +247,4 @@ The same architecture can be used on many time series tasks outside the audio do
 
 ## Feedback
 
-Send feedback to [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov).
+Send feedback to [Volodymyr Kuleshov](https://ai.stanford.edu/~kuleshov/).
