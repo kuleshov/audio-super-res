@@ -218,7 +218,7 @@ y = np.zeros((2))
 
 inputs = Input(shape=(100, 50))
 l = TFiLM(2)(inputs)
-l = Flatten()(x)
+l = Flatten()(l)
 outputs = Dense(1, activation='sigmoid')(l)
 
 
@@ -247,4 +247,4 @@ The same architecture can be used on many time series tasks outside the audio do
 
 ## Feedback
 
-Send feedback to [Volodymyr Kuleshov](http://www.stanford.edu/~kuleshov).
+Send feedback to [Sawyer Birnbaum](sawyerb@stanford.edu).
