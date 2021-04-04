@@ -1,7 +1,7 @@
 SINGLE_SPEAKER_DIR=../VCTK-Corpus/wav48/p225
 
 # patch generation
-SCA=8
+SCA=4
 TR_DIM=-1
 TR_STR=4096
 VA_DIM=-1

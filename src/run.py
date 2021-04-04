@@ -9,11 +9,15 @@ matplotlib.use('Agg')
 
 import argparse
 import numpy as np
-import cPickle
+import pickle
 
 import models
 from models.model import default_opt
 from models.io import load_h5, upsample_wav
+import tensorflow as tf
+
+tf.compat.v1.disable_eager_execution()
+
 
 # ----------------------------------------------------------------------------
 
@@ -46,7 +50,7 @@ def make_parser():
   train_parser.add_argument('--lr', default=1e-3, type=float,
     help='learning rate')
   train_parser.add_argument('--r', type=int, default=4, help='upscaling factor')
-  train_parser.add_argument('--speaker', default='single', choices=('single', 'multi'), 
+  train_parser.add_argument('--speaker', default='single', choices=('single', 'multi'),
     help='number of speakers being trained on')
   train_parser.add_argument('--piano', default='false', choices=('true', 'false'))
   train_parser.add_argument('--grocery', default='false', choices=('true', 'false'))
@@ -62,16 +66,16 @@ def make_parser():
     help='path to training checkpoint')
   eval_parser.add_argument('--out-label', default='',
     help='append label to output samples')
-  eval_parser.add_argument('--wav-file-list', 
+  eval_parser.add_argument('--wav-file-list',
     help='list of audio files for evaluation')
   eval_parser.add_argument('--r', help='upscaling factor', default = 4, type=int)
-  eval_parser.add_argument('--sr', help='high-res sampling rate', 
+  eval_parser.add_argument('--sr', help='high-res sampling rate',
                                    type=int, default=16000)
   eval_parser.add_argument('--grocery', default='false', choices=('true', 'false'))
   eval_parser.add_argument('--model', default='audiounet',
     choices=('audiounet', 'audiotfilm', 'dnn', 'spline'),
     help='model to train')
-  eval_parser.add_argument('--speaker', default='single', choices=('single', 'multi'), 
+  eval_parser.add_argument('--speaker', default='single', choices=('single', 'multi'),
     help='number of speakers being trained on')
   eval_parser.add_argument('--pool_size', type=int, default=4, help='size of pooling window')
   eval_parser.add_argument('--strides', type=int, default=4, help='pooling stide')
@@ -82,21 +86,21 @@ def make_parser():
 
 def train(args):
   full = True if args.full == 'true' else False
-    
+
   # get data
   if(args.grocery == 'false'):
     X_train, Y_train = load_h5(args.train)
     X_val, Y_val = load_h5(args.val)
   else:
-    X_train = cPickle.load(open("../data/grocery/grocery/grocery-train-data" + args.train))
-    Y_train = cPickle.load(open("../data/grocery/grocery/grocery-train-label" + args.train))
-    X_val = cPickle.load(open("../data/grocery/grocery/grocery-test-data_" + args.train))
-    Y_val = cPickle.load(open("../data/grocery/grocery/grocery-test-label" + args.train))
+    X_train = pickle.load(open("../data/grocery/grocery/grocery-train-data" + args.train))
+    Y_train = pickle.load(open("../data/grocery/grocery/grocery-train-label" + args.train))
+    X_val = pickle.load(open("../data/grocery/grocery/grocery-test-data_" + args.train))
+    Y_val = pickle.load(open("../data/grocery/grocery/grocery-test-label" + args.train))
     X_train = np.reshape(X_train, [X_train.shape[0], X_train.shape[1], 1])
     Y_train = np.reshape(Y_train, [Y_train.shape[0], Y_train.shape[1], 1])
     X_val = np.reshape(X_val, [X_val.shape[0], X_val.shape[1], 1])
     Y_val = np.reshape(Y_val, [Y_val.shape[0], Y_val.shape[1], 1])
- 
+
   # reshape piano data
   if args.piano == 'true':
       X_train = np.reshape(X_train, [X_train.shape[0], X_val.shape[2], X_val.shape[1]])
@@ -129,30 +133,30 @@ def eval(args):
     with open(args.wav_file_list) as f:
       for line in f:
         try:
-          print(line.strip())
+          print((line.strip()))
           if(args.speaker == 'single'):
             upsample_wav('../data/vctk/VCTK-Corpus/wav48/p225/'+line.strip(), args, model)
           else:
             upsample_wav('../data/vctk/VCTK-Corpus/'+line.strip(), args, model)
         except EOFError:
-          print 'WARNING: Error reading file:', line.strip()
+          print('WARNING: Error reading file:', line.strip())
 
 def get_model(args, n_dim, r, from_ckpt=False, train=True, grocery='false'):
-  """Create a model based on arguments"""  
+  """Create a model based on arguments"""
   if train:
     opt_params = { 'alg' : args.alg, 'lr' : args.lr, 'b1' : 0.9, 'b2' : 0.999,
                    'batch_size': args.batch_size, 'layers': args.layers }
-  else: 
+  else:
     opt_params = default_opt
 
-  print(args.model)
+  print((args.model))
   # create model
   if args.model == 'audiounet':
     model = models.AudioUNet(from_ckpt=from_ckpt, n_dim=n_dim, r=r,
                                  opt_params=opt_params, log_prefix=args.logname)
   elif args.model == 'audiotfilm':
-    model = models.AudioTfilm(from_ckpt=from_ckpt, n_dim=n_dim, r=r, pool_size = args.pool_size, 
-                                strides=args.strides, opt_params=opt_params, log_prefix=args.logname)  
+    model = models.AudioTfilm(from_ckpt=from_ckpt, n_dim=n_dim, r=r, pool_size = args.pool_size,
+                                strides=args.strides, opt_params=opt_params, log_prefix=args.logname)
   elif args.model == 'dnn':
     model = models.DNN(from_ckpt=from_ckpt, n_dim=n_dim, r=r,
                                  opt_params=opt_params, log_prefix=args.logname)

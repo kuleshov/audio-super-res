@@ -4,7 +4,7 @@
 import numpy as np
 import tensorflow as tf
 import pprint
-import cPickle
+import pickle
 from tqdm import tqdm
 from sklearn import(manifold, datasets, decomposition, ensemble, discriminant_analysis, random_projection)
 from time import time
@@ -55,7 +55,7 @@ ids = np.load("../data/vctk/multispeaker/ID_list") # this associates each audio 
                                                    # i.e., the id on line 1 is the id of the sample in row 1 of the datafile
 
 print("loaded id list")
-data = cPickle.load(open("../data/vctk/multispeaker/full-data-vctk-multispeaker-interp-val.4.16000.-1.8192.0.25"))
+data = pickle.load(open("../data/vctk/multispeaker/full-data-vctk-multispeaker-interp-val.4.16000.-1.8192.0.25"))
 #data = np.array([[1, 2, 3, 4, 5, 6, 7]])
 print("loaded data")
 ##acs = []
@@ -67,19 +67,19 @@ print("loaded data")
 ##x = 1/0
 maps = {}
 used_ids = []
-with tf.Session() as sess:
+with tf.compat.v1.Session() as sess:
     # setup session
-    gpu_options=tf.GPUOptions(allow_growth=True)
+    gpu_options=tf.compat.v1.GPUOptions(allow_growth=True)
    
-    sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, allow_soft_placement=True))
+    sess = tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(gpu_options=gpu_options, allow_soft_placement=True))
     K.set_session(sess)  
     # load model
-    saver =tf.train.import_meta_graph('./full-snr-multispeaker_audiohybrid2.lr0.00300.1.g4.b32.d8192.r4.lr0.000300.1.g4.b32/model.ckpt-41761.meta')
-    graph = tf.get_default_graph()
+    saver =tf.compat.v1.train.import_meta_graph('./full-snr-multispeaker_audiohybrid2.lr0.00300.1.g4.b32.d8192.r4.lr0.000300.1.g4.b32/model.ckpt-41761.meta')
+    graph = tf.compat.v1.get_default_graph()
     saver.restore(sess, tf.train.latest_checkpoint('./full-snr-multispeaker_audiohybrid2.lr0.00300.1.g4.b32.d8192.r4.lr0.000300.1.g4.b32'))
     #graph.clear_collection('losses')
   
-    for i in tqdm(range(0, len(data))):        
+    for i in tqdm(list(range(0, len(data)))):        
         u = np.random.uniform()
         if u > 1: continue
         used_ids.append(ids[i])
@@ -110,10 +110,10 @@ with tf.Session() as sess:
             if layers[i] not in maps: maps[layers[i]] = []
             maps[layers[i]].append(a)
     
-    print used_ids
-    for layer, acts in tqdm(maps.iteritems()):
+    print(used_ids)
+    for layer, acts in tqdm(iter(maps.items())):
         acts = np.array(acts)
-        print acts.shape
+        print(acts.shape)
         name =  re.sub("[/,:]", "_", layer)
         np.save('lstm_merge_activations_' +name, acts)
 
@@ -131,8 +131,8 @@ with tf.Session() as sess:
         ax = fig.add_subplot(1, 1, 1)
         ax.scatter(X_tsne[:,0], X_tsne[:,1], c=colors)
         handles =ax.get_legend_handles_labels()
-        pts = [plt.Line2D((0,1),(0,0), color = c, marker = 'o', linestyle = '') for c in genders.values()]
-        ax.legend(pts, genders.keys(), loc=4)
+        pts = [plt.Line2D((0,1),(0,0), color = c, marker = 'o', linestyle = '') for c in list(genders.values())]
+        ax.legend(pts, list(genders.keys()), loc=4)
         plt.title(name)
         fig.savefig("lstm_merge_t-SNE_gender_" + name+".png")
 
@@ -147,8 +147,8 @@ with tf.Session() as sess:
         ax = fig.add_subplot(1, 1, 1)
         ax.scatter(X_tsne[:,0], X_tsne[:,1], c=colors)
         handles =ax.get_legend_handles_labels()
-        pts = [plt.Line2D((0,1),(0,0), color = c, marker = 'o', linestyle = '') for c in accents.values()]
-        ax.legend(pts, accents.keys(), loc=4)
+        pts = [plt.Line2D((0,1),(0,0), color = c, marker = 'o', linestyle = '') for c in list(accents.values())]
+        ax.legend(pts, list(accents.keys()), loc=4)
         plt.title(name)
         fig.savefig("lstm_merge_t-SNE_accent_" + name+".png")
         plt.clf()

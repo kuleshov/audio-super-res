@@ -5,7 +5,7 @@ Create an HDF5 file of patches for training super-resolution model.
 import os, argparse
 import numpy as np
 import h5py
-import cPickle
+import pickle
 
 import librosa
 from scipy import interpolate
@@ -27,7 +27,7 @@ parser.add_argument('--dimension', type=int,
   help='dimension of patches--use -1 for no patching')
 parser.add_argument('--stride', type=int, default=3200,
   help='stride when extracting patches')
-parser.add_argument('--interpolate', action='store_true', 
+parser.add_argument('--interpolate', action='store_true',
   help='interpolate low-res patches with cubic splines')
 parser.add_argument('--low-pass', action='store_true',
   help='apply low-pass filter when generating low-res patches')
@@ -85,10 +85,10 @@ def add_data(h5_file, inputfiles, args, save_examples=False):
 
   print(len(file_list))
   for j, file_path in enumerate(file_list):
-    if j % 10 == 0: print '%d/%d' % (j, num_files)
+    if j % 10 == 0: print('%d/%d' % (j, num_files))
 
     ID = int(re.search('p\d\d\d/', file_path).group(0)[1:-1])
-    
+
     # load audio file
     x, fs = librosa.load(file_path, sr=args.sr)
 
@@ -101,7 +101,7 @@ def add_data(h5_file, inputfiles, args, save_examples=False):
       x_lr = decimate(x, args.scale)
     else:
       x_lr = np.array(x[0::args.scale])
-    
+
     if args.interpolate:
       x_lr = upsample(x_lr, args.scale)
       assert len(x) % args.scale == 0
@@ -150,7 +150,7 @@ def add_data(h5_file, inputfiles, args, save_examples=False):
   if save_examples:
     librosa.output.write_wav('example-hr.wav', hr_patches[40][0], fs, norm=False)
     librosa.output.write_wav('example-lr.wav', lr_patches[40][0], fs / args.scale, norm=False)
-   
+
 
   if args.dimension is not -1:
     # create the hdf5 file
@@ -160,12 +160,12 @@ def add_data(h5_file, inputfiles, args, save_examples=False):
     data_set[...] = lr_patches
     label_set[...] = hr_patches
     print(len(ID_list))
-    cPickle.dump(ID_list, open('ID_list_patches_'+str(d)+'_'+str(args.scale), 'w'))
+    pickle.dump(ID_list, open('ID_list_patches_'+str(d)+'_'+str(args.scale), 'wb'))
   else:
     # pickle the data
-    cPickle.dump(hr_patches, open('full-label-'+args.out[:-7],'w'))
-    cPickle.dump(lr_patches, open('full-data-'+args.out[:-7],'w'))
-    cPickle.dump(ID_list, open('ID_list','w'))
+    pickle.dump(hr_patches, open('full-label-'+args.out[:-7],'wb'))
+    pickle.dump(lr_patches, open('full-data-'+args.out[:-7],'wb'))
+    pickle.dump(ID_list, open('ID_list','wb'))
 
 
 
@@ -173,10 +173,10 @@ def upsample(x_lr, r):
   x_lr = x_lr.flatten()
   x_hr_len = len(x_lr) * r
   x_sp = np.zeros(x_hr_len)
-  
+
   i_lr = np.arange(x_hr_len, step=r)
   i_hr = np.arange(x_hr_len)
-  
+
   f = interpolate.splrep(i_lr, x_lr)
 
   x_sp = interpolate.splev(i_hr, f)
