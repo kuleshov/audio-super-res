@@ -207,6 +207,7 @@ These will be found in the same folder as `f.wav`. Because of how our model is d
 `keras_layer.py` implements the TFiLM layer as a customer Keras layer. The below code illustrates how to use this custom layer.
 
 ```
+import numpy as np
 from keras.layers import Input, Dense, Flatten, Lambda
 from keras.models import Model
 import tensorflow as tf
