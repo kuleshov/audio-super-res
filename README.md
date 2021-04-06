@@ -12,7 +12,7 @@ V. Kuleshov, Z. Enam, and S. Ermon. Audio Super Resolution Using Neural Networks
 
 ### Requirements
 
-The model is implemented Python 3.7.10 and uses several additional libraries.
+The model is implemented in Python 3.7.10 and uses several additional libraries.
 
 * `tensorflow==2.4.1`
 * `keras==2.4.0`
