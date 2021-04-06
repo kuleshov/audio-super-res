@@ -10,12 +10,11 @@ from .layers.subpixel import SubPixel1D, SubPixel1D_v2
 from tensorflow.python.keras import backend as K
 from keras.layers import Concatenate, Add, MaxPooling1D, MaxPooling2D, AveragePooling1D
 from keras.layers.core import Activation, Dropout
-from keras.layers.convolutional import UpSampling1D#, AtrousConvolution1D
+from keras.layers.convolutional import UpSampling1D
 from keras.layers import Conv1D
 from keras.layers import LSTM
 from keras.layers.normalization import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
-#from keras.initializations import normal, orthogonal
 from keras.initializers import RandomNormal, Orthogonal
 
 # ----------------------------------------------------------------------------
@@ -68,8 +67,6 @@ class AudioTfilm(Model):
 
       def _apply_normalizer(x_in, x_norm, n_filters, n_block):
         x_shape = tf.shape(input=x_in)
-        #x_in = tf.compat.v1.Print(x_in, [x_shape], summarize=5, message=' x_in: ')
-        #x_norm = tf.compat.v1.Print(x_norm, [tf.shape(x_norm)], summarize=5, message=' x_norm: ')
         n_steps = x_shape[1] / int(n_block) # will be 32 at training
 
         # reshape input into blocks
@@ -77,9 +74,6 @@ class AudioTfilm(Model):
         x_norm = tf.reshape(x_norm, shape=(-1, n_steps, 1, n_filters))
 
         # multiply
-        #x_norm = tf.compat.v1.Print(x_norm, [tf.shape(x_norm)], summarize=5)
-        #x_in= tf.compat.v1.Print(x_in, [tf.shape(x_in)], summarize=5)
-        #with tf.control_dependencies([print_op_1, print_op_2]):
         x_out = x_norm * x_in
 
         # return to original shape
@@ -90,7 +84,6 @@ class AudioTfilm(Model):
 
       # downsampling layers
       for l, nf, fs in zip(list(range(L)), n_filters, n_filtersizes):
-        # x = tf.compat.v1.Print(x, [tf.shape(x)], summarize=5, message='down: ')
         with tf.compat.v1.name_scope('downsc_conv%d' % l):
           x = (Conv1D(filters=nf, kernel_size=fs, dilation_rate = DRATE,
                   activation=None, padding='same', kernel_initializer=Orthogonal()))(x)
@@ -109,7 +102,6 @@ class AudioTfilm(Model):
           print('D-Block: ', x.get_shape())
           downsampling_l.append(x)
 
-      # x = tf.compat.v1.Print(x, [tf.shape(x)], summarize=5, message='bottleneck: ')
       # bottleneck layer
       with tf.compat.v1.name_scope('bottleneck_conv'):
           x = (Conv1D(filters=n_filters[-1], kernel_size=n_filtersizes[-1], dilation_rate = DRATE,
@@ -125,7 +117,6 @@ class AudioTfilm(Model):
 
       # upsampling layers
       for l, nf, fs, l_in in reversed(list(zip(list(range(L)), n_filters, n_filtersizes, downsampling_l))):
-        # x = tf.compat.v1.Print(x, [tf.shape(x)], summarize=5, message='up: ')
         with tf.compat.v1.name_scope('upsc_conv%d' % l):
           # (-1, n/2, 2f)
           x = (Conv1D(filters=2*nf, kernel_size=fs, dilation_rate = DRATE,
@@ -163,14 +154,6 @@ class AudioTfilm(Model):
 
 # ----------------------------------------------------------------------------
 # helpers
-
-def normal_init(shape, dim_ordering='tf', name=None):
-    return RandomNormal(stdev=1e-3)
-    #return normal(shape, scale=1e-3, name=name, dim_ordering=dim_ordering)
-
-def orthogonal_init(shape, dim_ordering='tf', name=None):
-    return Orthogonal()
-    #return orthogonal(shape, name=name, dim_ordering=dim_ordering)
 
 def spline_up(x_lr, r):
   x_lr = x_lr.flatten()

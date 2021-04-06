@@ -9,10 +9,9 @@ from .layers.subpixel import SubPixel1D, SubPixel1D_v2
 from tensorflow.python.keras import backend as K
 from keras.layers import merge
 from keras.layers.core import Activation, Dropout
-from keras.layers.convolutional import Convolution1D
+from keras.layers import Conv1D
 from keras.layers.normalization import BatchNormalization
 from keras.layers.advanced_activations import LeakyReLU
-#from keras.initializers import normal, orthogonal
 from keras.initializers import RandomNormal, Orthogonal
 
 # ----------------------------------------------------------------------------
@@ -45,8 +44,8 @@ class AudioUNet(Model):
       # downsampling layers
       for l, nf, fs in zip(list(range(L)), n_filters, n_filtersizes):
         with tf.compat.v1.name_scope('downsc_conv%d' % l):
-          x = (Convolution1D(nb_filter=nf, filter_length=fs,
-                  activation=None, border_mode='same', init=orthogonal_init,
+          x = (Conv1D(filters=nf, kernel_size=fs,
+                  activation=None, padding='same', init=Orthogonal(),
                   subsample_length=2))(x)
           # if l > 0: x = BatchNormalization(mode=2)(x)
           x = LeakyReLU(0.2)(x)
@@ -55,19 +54,19 @@ class AudioUNet(Model):
 
       # bottleneck layer
       with tf.compat.v1.name_scope('bottleneck_conv'):
-          x = (Convolution1D(nb_filter=n_filters[-1], filter_length=n_filtersizes[-1],
-                  activation=None, border_mode='same', init=orthogonal_init,
+          x = (Conv1D(filters=n_filters[-1], kernel_size=n_filtersizes[-1],
+                  activation=None, padding='same', init=Orthogonal(),
                   subsample_length=2))(x)
-          x = Dropout(p=0.5)(x)
+          x = Dropout(rate=0.5)(x)
           x = LeakyReLU(0.2)(x)
 
       # upsampling layers
       for l, nf, fs, l_in in reversed(list(zip(list(range(L)), n_filters, n_filtersizes, downsampling_l))):
         with tf.compat.v1.name_scope('upsc_conv%d' % l):
           # (-1, n/2, 2f)
-          x = (Convolution1D(nb_filter=2*nf, filter_length=fs,
-                  activation=None, border_mode='same', init=orthogonal_init))(x)
-          x = Dropout(p=0.5)(x)
+          x = (Conv1D(filters=2*nf, kernel_size=fs,
+                  activation=None, padding='same', init=Orthogonal()))(x)
+          x = Dropout(rate=0.5)(x)
           x = Activation('relu')(x)
           # (-1, n, f)
           x = SubPixel1D(x, r=2)
@@ -77,8 +76,8 @@ class AudioUNet(Model):
 
       # final conv layer
       with tf.compat.v1.name_scope('lastconv'):
-        x = Convolution1D(nb_filter=2, filter_length=9,
-                activation=None, border_mode='same', init=normal_init)(x)
+        x = Convolution1D(filters=2, kernel_size=9,
+                activation=None, padding='same', init=RandomNormal(stdev=1e-3))(x)
         x = SubPixel1D(x, r=2)
         print(x.get_shape())
 
@@ -98,14 +97,6 @@ class AudioUNet(Model):
 
 # ----------------------------------------------------------------------------
 # helpers
-
-def normal_init(shape, dim_ordering='tf', name=None):
-    return RandomNormal(stdev=1e-3)
-    #return normal(shape, scale=1e-3, name=name, dim_ordering=dim_ordering)
-
-def orthogonal_init(shape, dim_ordering='tf', name=None):
-    return Orthogonal()
-    #return orthogonal(shape, name=name, dim_ordering=dim_ordering)
 
 def spline_up(x_lr, r):
   x_lr = x_lr.flatten()

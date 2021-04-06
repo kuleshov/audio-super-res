@@ -23,9 +23,6 @@ class Model(object):
                  opt_params=default_opt, log_prefix='./run'):
 
         # create session
-        #self.sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
-        #gpu_options = tf.GPUOptions(allow_growth=True)
-        #self.sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options, allow_soft_placement=True))
         self.sess = tf.compat.v1.Session()
         K.set_session(self.sess)  # pass keras the session
 
@@ -338,8 +335,6 @@ class Model(object):
         g = tf.compat.v1.get_default_graph()
         k_tensors = [n for n in g.as_graph_def(
         ).node if 'keras_learning_phase' in n.name]
-        #breakpoint()
-        #assert len(k_tensors) <= 1
         if k_tensors:
             k_learning_phase = g.get_tensor_by_name(k_tensors[0].name + ':0')
             feed_dict[k_learning_phase] = train

@@ -30,7 +30,7 @@ def make_parser():
   train_parser = subparsers.add_parser('train')
   train_parser.set_defaults(func=train)
 
-  train_parser.add_argument('--model', default='audiounet',
+  train_parser.add_argument('--model', default='audiotfilm',
     choices=('audiounet', 'audiotfilm', 'dnn', 'spline'),
     help='model to train')
   train_parser.add_argument('--train', required=True,

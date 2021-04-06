@@ -64,7 +64,7 @@ class DNN(Model):
                 in_shape = n_dim/2
 
         #x = Dense(units=out_units, input_shape=(in_shape,), init=normal_init)(x)
-        x = Dense(out_units, init=normal_init ,input_dim=(in_shape,))(x)
+        x = Dense(out_units, init=RandomNormal(stdev=0.0000001) ,input_dim=(in_shape,))(x)
         x_shape = tf.shape(input=x)
         x = BatchNormalization()(x)
         x = LeakyReLU(0.2)(x)
@@ -85,10 +85,6 @@ class DNN(Model):
 
 # ----------------------------------------------------------------------------
 # helpers
-
-def normal_init(shape, dim_ordering='tf', name=None):
-    return RandomNormal(stdev=0.0000001)
-    #return normal(shape, scale=0.0000001, name=name, dim_ordering=dim_ordering)
 
 def spline_up(x_lr, r):
   x_lr = x_lr.flatten()

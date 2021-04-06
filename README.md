@@ -12,15 +12,15 @@ V. Kuleshov, Z. Enam, and S. Ermon. Audio Super Resolution Using Neural Networks
 
 ### Requirements
 
-The model is implemented in Tensorflow and Keras and uses several additional libraries. Specifically, we used:
+The model is implemented Python 3.7.10 and uses several additional libraries.
 
-* `tensorflow==1.13.1`
-* `keras==1.2.1`
-* `numpy==1.16.4`
-* `scipy==1.2.1`
+* `tensorflow==2.4.1`
+* `keras==2.4.0`
+* `numpy==1.19.5`
+* `scipy==1.6.0`
 * `librosa==0.4.3`
-* `h5py==2.9.0`
-* `matplotlib==1.5.1`
+* `h5py==2.10.0`
+* `matplotlib==3.3.4`
 
 ### Setup
 
@@ -88,6 +88,53 @@ make;
 ```
 
 This will use a set of default parameters.
+
+To generate the files needed for the training example below, run the following from the `speaker1` directory:
+```
+python ../prep_vctk.py \
+  --file-list  speaker1-train-files.txt \
+  --in-dir ../VCTK-Corpus/wav48/p225 \
+  --out vctk-speaker1-train.4.16000.8192.4096.h5 \
+  --scale 4 \
+  --sr 16000 \
+  --dimension 8192 \
+  --stride 4096 \
+  --interpolate \
+  --low-pass
+
+python ../prep_vctk.py \
+  --file-list speaker1-val-files.txt \
+  --in-dir ../VCTK-Corpus/wav48/p225 \
+  --out vctk-speaker1-val.4.16000.8192.4096.h5.tmp \
+  --scale 4 \
+  --sr 16000 \
+  --dimension 8192 \
+  --stride 4096 \
+  --interpolate \
+  --low-pass
+
+python ../prep_vctk.py \
+  --file-list  speaker1-train-files.txt \
+  --in-dir ../VCTK-Corpus/wav48/p225 \
+  --out vctk-speaker1-train.4.16000.-1.4096.h5 \
+  --scale 4 \
+  --sr 16000 \
+  --dimension -1 \
+  --stride 4096 \
+  --interpolate \
+  --low-pass
+
+python ../prep_vctk.py \
+  --file-list speaker1-val-files.txt \
+  --in-dir ../VCTK-Corpus/wav48/p225 \
+  --out vctk-speaker1-val.4.16000.-1.4096.h5.tmp \
+  --scale 4 \
+  --sr 16000 \
+  --dimension -1 \
+  --stride 4096 \
+  --interpolate \
+  --low-pass
+```
 
 ### Audio super resolution tasks
 
@@ -202,6 +249,8 @@ and create for each file `f.wav` three audio samples:
 * `f.singlespeaker-out.sr.wav`: the super-resolved version
 
 These will be found in the same folder as `f.wav`. Because of how our model is defined, the number of samples in the input must be a multiple of `2**downscaling_layers`; if that's not the case, we will clip the input file (potentially shortening it by a fraction of a second).
+
+**Discalimer:** We recently upgraded the versions of the many of the packages, including Keras and Tensorflow. The example workflow for training and predicting should work, but the codebase hasn't been fully tested. Please create an issue if you run into any errors.   
 
 ### Keras Layer
 `keras_layer.py` implements the TFiLM layer as a customer Keras layer. The below code illustrates how to use this custom layer.
