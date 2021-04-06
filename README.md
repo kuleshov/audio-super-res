@@ -250,7 +250,7 @@ and create for each file `f.wav` three audio samples:
 
 These will be found in the same folder as `f.wav`. Because of how our model is defined, the number of samples in the input must be a multiple of `2**downscaling_layers`; if that's not the case, we will clip the input file (potentially shortening it by a fraction of a second).
 
-**Discalimer:** We recently upgraded the versions of the many of the packages, including Keras and Tensorflow. The example workflow for training and predicting should work, but the codebase hasn't been fully tested. Please create an issue if you run into any errors.   
+**Disclaimer:** We recently upgraded the versions of the many of the packages, including Keras and Tensorflow. The example workflow for training and predicting should work, but the codebase has not been fully tested. Please create an issue if you run into any errors.   
 
 ### Keras Layer
 `keras_layer.py` implements the TFiLM layer as a customer Keras layer. The below code illustrates how to use this custom layer.
