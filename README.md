@@ -246,7 +246,7 @@ and create for each file `f.wav` three audio samples:
 
 * `f.singlespeaker-out.hr.wav`: the high resolution version
 * `f.singlespeaker-out.lr.wav`: the low resolution version processed by the model
-* `f.singlespeaker-out.sr.wav`: the super-resolved version
+* `f.singlespeaker-out.pr.wav`: the super-resolved version
 
 These will be found in the same folder as `f.wav`. Because of how our model is defined, the number of samples in the input must be a multiple of `2**downscaling_layers`; if that's not the case, we will clip the input file (potentially shortening it by a fraction of a second).
 
