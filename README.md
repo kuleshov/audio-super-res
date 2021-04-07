@@ -222,6 +222,8 @@ python run.py train \
 
 https://drive.google.com/file/d/1pqIaxtZpt9GRc-Yp1zCzVoSbQFSLnERF/view?usp=sharing
 
+To use the model, unzip the file in the `src` directory and run eval with the logname corresponding to the checkpoint file.
+
 ### Testing the model
 
 The `run.py` command may be also used to evaluate the model on new audio samples.
