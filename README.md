@@ -209,9 +209,8 @@ The above run will store checkpoints in `./singlespeaker.lr0.000300.1.g4.b64`.
 
 Note on the models: audiotfilm is the best model.
 
-#### Pre-trained model:
+#### Pre-Trained Model
 See the below link for a pre-trained single-speaker model. This model was trained with the following parameters:
-
 ```
 python run.py train \
   --train ../data/vctk/speaker1/vctk-speaker1-train.4.16000.8192.4096.h5 \
