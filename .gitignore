@@ -7,3 +7,4 @@ sftp-config.json
 src/*lr0*
 data/vctk/speaker1/*full*
 data/vctk/multispeaker/*full*
+src/single_speaker_model.zip
