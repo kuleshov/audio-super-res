@@ -85,9 +85,8 @@ def add_data(h5_file, inputfiles, args, save_examples=False):
 
   print(len(file_list))
   for j, file_path in enumerate(file_list):
-    if j % 10 == 0: print('%d/%d' % (j, num_files))
 
-    ID = int(re.search('p\d\d\d/', file_path).group(0)[1:-1])
+    ID = file_list[j]
 
     # load audio file
     x, fs = librosa.load(file_path, sr=args.sr)
@@ -186,4 +185,5 @@ def upsample(x_lr, r):
 if __name__ == '__main__':
   # create train
   with h5py.File(args.out, 'w') as f:
+
     add_data(f, args.file_list, args, save_examples=False)
