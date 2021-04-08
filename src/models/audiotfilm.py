@@ -87,7 +87,7 @@ class AudioTfilm(Model):
         with tf.compat.v1.name_scope('downsc_conv%d' % l):
           x = (Conv1D(filters=nf, kernel_size=fs, dilation_rate = DRATE,
                   activation=None, padding='same', kernel_initializer=Orthogonal()))(x)
-          x = (MaxPooling1D(pool_size=self.pool_size, padding='valid', strides=self.stride))(x)
+          x = (MaxPooling1D(pool_size=self.pool_size, padding='valid', strides=self.strides))(x)
           x = LeakyReLU(0.2)(x)
 
           # create and apply the normalizer
@@ -106,7 +106,7 @@ class AudioTfilm(Model):
       with tf.compat.v1.name_scope('bottleneck_conv'):
           x = (Conv1D(filters=n_filters[-1], kernel_size=n_filtersizes[-1], dilation_rate = DRATE,
                   activation=None, padding='same', kernel_initializer=Orthogonal))(x)
-          x = (MaxPooling1D(pool_size=self.pool_size, padding='valid', strides=self.stride))(x)
+          x = (MaxPooling1D(pool_size=self.pool_size, padding='valid', strides=self.strides))(x)
           x = Dropout(rate=0.5)(x)
           x = LeakyReLU(0.2)(x)
 
