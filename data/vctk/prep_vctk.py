@@ -85,7 +85,7 @@ def add_data(h5_file, inputfiles, args, save_examples=False):
 
   print(len(file_list))
   for j, file_path in enumerate(file_list):
-
+    if j % 10 == 0: print('%d/%d' % (j, num_files))
     ID = file_list[j]
 
     # load audio file
