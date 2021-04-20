@@ -200,8 +200,8 @@ python run.py train \
   --r 4 \
   --layers 4 \
   --piano false \
-  --pool_size 8 \
-  --strides 8
+  --pool_size 2 \
+  --strides 2
   --full true
 ```
 
