@@ -22,7 +22,7 @@ The model is implemented in Python 3.7.10 and uses several additional libraries.
 * `h5py==2.10.0`
 * `matplotlib==3.3.4`
 
-A full list of the packages we use is in `requirements.txt`
+A full list of the packages on our enviornment is in `requirements.txt`
 
 ### Setup
 
