@@ -317,6 +317,7 @@ class Model(object):
 
                         __, snr, __ = self.eval_err(X, Y, 1)
                         full_snr += snr
+                    print("Full SNR: " + str(full_snr))
 
     def train(self, feed_dict):
         _, loss = self.sess.run(
