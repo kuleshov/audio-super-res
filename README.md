@@ -251,8 +251,8 @@ python run.py eval \
   --out-label singlespeaker-out \
   --wav-file-list ../data/vctk/speaker1/speaker1-val-files.txt \
   --r 4 \
-  --pool_size 8 \
-  --strides 8 \
+  --pool_size 2 \
+  --strides 2 \
   --model audiotfilm
 ```
 
