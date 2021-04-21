@@ -200,8 +200,8 @@ python run.py train \
   --r 4 \
   --layers 4 \
   --piano false \
-  --pool_size 8 \
-  --strides 8
+  --pool_size 2 \
+  --strides 2
   --full true
 ```
 
@@ -217,7 +217,7 @@ python run.py train \
   --val ../data/vctk/speaker1/vctk-speaker1-val.4.16000.8192.4096.h5 \
   -e 2   --batch-size 16  --lr 3e-4   --logname singlespeaker \
   --model audiotfilm   --r 4   --layers 4   --piano false \   
-  --pool_size 8   --strides 8
+  --pool_size 2   --strides 2
 ```
 
 https://drive.google.com/file/d/1pqIaxtZpt9GRc-Yp1zCzVoSbQFSLnERF/view?usp=sharing
@@ -251,8 +251,8 @@ python run.py eval \
   --out-label singlespeaker-out \
   --wav-file-list ../data/vctk/speaker1/speaker1-val-files.txt \
   --r 4 \
-  --pool_size 8 \
-  --strides 8 \
+  --pool_size 2 \
+  --strides 2 \
   --model audiotfilm
 ```
 
