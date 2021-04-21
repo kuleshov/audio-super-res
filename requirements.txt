@@ -1,6 +1,6 @@
 Package                        Version
 ------------------------------ ------------
--ensorflow-estimator           2.4.0
+tensorflow-estimator           2.4.0
 absl-py                        0.10.0
 adal                           1.2.6
 aiohttp                        3.7.4
