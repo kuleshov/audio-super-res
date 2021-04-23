@@ -87,7 +87,8 @@ def add_data(h5_file, inputfiles, args, save_examples=False):
   for j, file_path in enumerate(file_list):
     if j % 10 == 0: print('%d/%d' % (j, num_files))
 
-    ID = int(re.search('p\d\d\d/', file_path).group(0)[1:-1])
+    directory_id_matches = re.search(fr'p(\d{{3}})\{os.path.sep}', file_path)
+    ID = int(directory_id_matches.group(1))
 
     # load audio file
     x, fs = librosa.load(file_path, sr=args.sr)
