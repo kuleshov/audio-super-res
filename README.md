@@ -310,7 +310,7 @@ We would like to emphasize a few points.
 
 ### Extensions
 
-The same architecture can be used on many time series tasks outside the audio domain. We have successfully used it to impute functional genomics data and denoise EEG recordings. Stay tuned for more updates!
+The same architecture can be used on many time series tasks outside the audio domain. We have successfully used it to impute functional genomics data and denoise EEG recordings.
 
 ## Feedback
 
