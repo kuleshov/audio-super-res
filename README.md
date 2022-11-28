@@ -31,6 +31,8 @@ To install this package, simply clone the git repo:
 ```
 git clone https://github.com/kuleshov/audio-super-res.git;
 cd audio-super-res;
+conda env create -f environment.yaml
+conda activate audio-super-res
 ```
 
 ## Running the model
