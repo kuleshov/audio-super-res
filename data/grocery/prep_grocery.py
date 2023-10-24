@@ -5,7 +5,7 @@ Create an HDF5 file of patches for training super-resolution model.
 import os, argparse
 import numpy as np
 import h5py
-import cPickle
+import pickle
 import csv
 from tqdm import tqdm
 import pprint
@@ -44,9 +44,9 @@ with open(f, 'rb') as csvfile:
 # avergae per count per date per item data and create tensor with
 # row = items, columns = date, and value = count
 data = []
-for vals in tqdm(items.values()):
+for vals in tqdm(list(items.values())):
     row = []
-    for sales in tqdm(vals.values()):
+    for sales in tqdm(list(vals.values())):
         row.append(np.average(np.array(sales)))
     if(len(row) >= NUM_DATES): # cut off extra dates to keep size constant 
                           # note: change this to change size of processed date
@@ -70,9 +70,9 @@ testX = np.multiply(testX, testMask)
 
 
 # pickle the data
-print trainX.shape
-print trainY.shape
-cPickle.dump(testX, open('grocery/grocery-test-data_'+str(MASK_PROB),'w'))
-cPickle.dump(testY, open('grocery/grocery-test-label'+str(MASK_PROB),'w'))
-cPickle.dump(trainX, open('grocery/grocery-train-data'+str(MASK_PROB),'w'))
-cPickle.dump(trainY, open('grocery/grocery-train-label'+str(MASK_PROB),'w'))
+print(trainX.shape)
+print(trainY.shape)
+pickle.dump(testX, open('grocery/grocery-test-data_'+str(MASK_PROB),'w'))
+pickle.dump(testY, open('grocery/grocery-test-label'+str(MASK_PROB),'w'))
+pickle.dump(trainX, open('grocery/grocery-train-data'+str(MASK_PROB),'w'))
+pickle.dump(trainY, open('grocery/grocery-train-label'+str(MASK_PROB),'w'))

@@ -1,10 +1,10 @@
 import os
 import numpy as np
-import cPickle
+import pickle
 import librosa
 from models.io import load_h5
 import argparse
-import cPickle
+import pickle
 from scipy import interpolate
 
 def make_parser():
@@ -49,8 +49,8 @@ def spline(args):
     if(args.grocery == 'false'):
         X_val, Y_val = load_h5(args.val)
     else:
-        X_val = cPickle.load(open("../data/grocery/grocery/grocery-test-data_" + args.val))
-        Y_val = cPickle.load(open("../data/grocery/grocery/grocery-test-label" + args.val))
+        X_val = pickle.load(open("../data/grocery/grocery/grocery-test-data_" + args.val))
+        Y_val = pickle.load(open("../data/grocery/grocery/grocery-test-label" + args.val))
         for i in range(len(X_val)):
             urow = upsample(X_val[i,:], 1)
             X_val[i,:] = urow
@@ -67,9 +67,9 @@ def spline(args):
         lsd = compute_log_distortion(np.reshape(Y, (-1)), np.reshape(P, (-1)))
         avg_sqrt_l2_loss = np.mean(sqrt_l2_loss, axis=0)
 
-        print t + " l2 loss: " + str(avg_sqrt_l2_loss)
-        print t + " average SNR: " + str(avg_snr)
-        print t + " lsd: " + str(lsd)
+        print(t + " l2 loss: " + str(avg_sqrt_l2_loss))
+        print(t + " average SNR: " + str(avg_snr))
+        print(t + " lsd: " + str(lsd))
 
 
 if __name__ == '__main__':
