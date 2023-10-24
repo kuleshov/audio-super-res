@@ -1,11 +1,11 @@
-SINGLE_SPEAKER_DIR=../VCTK-Corpus/wav48/p225
+SINGLE_SPEAKER_DIR=../VCTK-Corpus/wav48/p360
 
 # patch generation
 SCA=8
-TR_DIM=-1
-TR_STR=4096
-VA_DIM=-1
-VA_STR=4096
+TR_DIM=8192
+TR_STR=8192
+VA_DIM=8192
+VA_STR=8192
 SR=16000
 
 # ----------------------------------------------------------------------------
@@ -19,7 +19,7 @@ patches:
 # create dataset for one speaker
 
 vctk-speaker1-train.%.$(SR).$(TR_DIM).$(TR_STR).h5: speaker1-train-files.txt
-	python ../prep_vctk.py \
+	python3 ../prep_vctk.py \
 		--file-list $< \
 		--in-dir $(SINGLE_SPEAKER_DIR) \
 		--out $@.tmp \
@@ -32,7 +32,7 @@ vctk-speaker1-train.%.$(SR).$(TR_DIM).$(TR_STR).h5: speaker1-train-files.txt
 	mv $@.tmp $@
 
 vctk-speaker1-val.%.$(SR).$(VA_DIM).$(VA_STR).h5: speaker1-val-files.txt
-	python ../prep_vctk.py \
+	python3 ../prep_vctk.py \
 		--file-list $< \
 		--in-dir $(SINGLE_SPEAKER_DIR) \
 		--out $@.tmp \
