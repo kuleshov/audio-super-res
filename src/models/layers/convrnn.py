@@ -93,7 +93,7 @@ class BasicConvLSTMCell(RNNCell):
 
   def __call__(self, inputs, state, scope=None):
     """Long short-term memory cell (LSTM)."""
-    with tf.variable_scope(scope or type(self).__name__):  # "BasicLSTMCell"
+    with tf.compat.v1.variable_scope(scope or type(self).__name__):  # "BasicLSTMCell"
       # Parameters of gates are concatenated into one multiply for efficiency.
       if self._state_is_tuple:
         c, h = state
@@ -142,19 +142,19 @@ def _conv_linear(args, filter_size, num_features, bias, bias_start=0.0, scope=No
   dtype = [a.dtype for a in args][0]
 
   # Now the computation.
-  with tf.variable_scope(scope or "Conv"):
-    matrix = tf.get_variable(
+  with tf.compat.v1.variable_scope(scope or "Conv"):
+    matrix = tf.compat.v1.get_variable(
         "Matrix", [filter_size[0], filter_size[1], total_arg_size_depth, num_features], dtype=dtype)
     if len(args) == 1:
-      res = tf.nn.conv2d(args[0], matrix, strides=[1, 1, 1, 1], padding='SAME')
+      res = tf.nn.conv2d(input=args[0], filters=matrix, strides=[1, 1, 1, 1], padding='SAME')
     else:
-      res = tf.nn.conv2d(tf.concat(axis=3, values=args), matrix, strides=[1, 1, 1, 1], padding='SAME')
+      res = tf.nn.conv2d(input=tf.concat(axis=3, values=args), filters=matrix, strides=[1, 1, 1, 1], padding='SAME')
     if not bias:
       return res
-    bias_term = tf.get_variable(
+    bias_term = tf.compat.v1.get_variable(
         "Bias", [num_features],
         dtype=dtype,
-        initializer=tf.constant_initializer(
+        initializer=tf.compat.v1.constant_initializer(
             bias_start, dtype=dtype))
   return res + bias_term
 
